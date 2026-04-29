@@ -1,0 +1,3475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AgenixAI Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font:'DM Sans',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --bg:#070b14;
+  --bg2:#101827;
+  --bg3:#151f33;
+  --surf:#1a2740;
+  --t1:#ecf3ff;
+  --t2:#b8c6de;
+  --t3:#7f93b3;
+  --b1:#243552;
+  --b2:#3a5a87;
+  --acc:#4a90f5;
+  --acc2:#88beff;
+  --grn:#1ed8a0;
+  --grn2:#5ceac0;
+  --amb:#ffb34d;
+  --red:#f56060;
+  --pur:#9b7af5;
+  --r:12px;
+  --rl:16px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--font);
+  color:var(--t1);
+  background:radial-gradient(1200px 700px at -10% -20%, rgba(74,144,245,.16), transparent 55%),radial-gradient(900px 600px at 120% 10%, rgba(30,216,160,.12), transparent 45%),var(--bg);
+  position:relative;
+}
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image:linear-gradient(rgba(136,190,255,.04) 1px, transparent 1px),linear-gradient(90deg,rgba(136,190,255,.04) 1px, transparent 1px);
+  background-size:34px 34px;
+  opacity:.22;
+}
+
+.scr{display:none;min-height:100vh;padding:1rem;position:relative;z-index:1}
+.scr.on{display:flex;flex-direction:column;align-items:center;animation:screenIn .35s ease}
+
+.logo-wrap{text-align:center;margin:3rem 0 1.6rem}
+.logo-hex{width:84px;height:84px;border-radius:22px;margin:0 auto .9rem;background:linear-gradient(135deg,rgba(74,144,245,.28),rgba(30,216,160,.2));display:flex;align-items:center;justify-content:center;border:1px solid rgba(136,190,255,.4)}
+.logo-wrap h1{font-size:2.6rem;letter-spacing:.02em}
+.logo-wrap p{margin-top:.35rem;font-size:.8rem;letter-spacing:.12em;color:var(--t3)}
+
+.role-row{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;width:100%;max-width:980px}
+.rc{flex:1;min-width:280px;max-width:460px;background:linear-gradient(180deg,rgba(21,31,51,.94),rgba(12,19,33,.95));border:1px solid var(--b1);border-radius:20px;padding:1.2rem;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.rc:hover{transform:translateY(-3px);border-color:var(--b2);box-shadow:0 10px 24px rgba(0,0,0,.22)}
+.ri{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:.6rem}
+.ri.t{background:rgba(74,144,245,.18)}
+.ri.s{background:rgba(30,216,160,.18)}
+.rc h2{font-size:1.3rem;margin-bottom:.4rem}
+.desc{color:var(--t2);font-size:.88rem;line-height:1.65;margin-bottom:.85rem}
+.tpri{font-size:.69rem;padding:.22rem .55rem;border-radius:999px;font-weight:700;letter-spacing:.02em}
+.tblue{color:var(--acc2);background:rgba(74,144,245,.16)}
+.tgreen{color:var(--grn2);background:rgba(30,216,160,.16)}
+.tdim{color:var(--t3);background:rgba(127,147,179,.14)}
+.bm,.bs{display:block;width:100%;border:none;cursor:pointer;font-family:var(--font);font-weight:700;border-radius:10px;padding:.72rem .9rem;margin-top:.52rem}
+.bm.t{background:var(--acc);color:#fff}
+.bm.s{background:var(--grn);color:#052214}
+.bs{background:transparent;color:var(--t2);border:1px solid var(--b1)}
+
+.cdm{position:fixed;inset:0;background:rgba(4,10,20,.72);display:none;align-items:center;justify-content:center;z-index:25;padding:1rem}
+.cdm-card{width:min(940px,96vw);max-height:88vh;overflow:auto;background:linear-gradient(180deg,rgba(21,31,51,.96),rgba(12,19,33,.97));border:1px solid var(--b1);border-radius:16px;padding:1rem}
+
+.back{background:transparent;border:1px solid var(--b1);color:var(--t2);border-radius:8px;padding:.45rem .8rem;cursor:pointer;font-family:var(--font)}
+.back:hover{border-color:var(--b2);color:var(--t1)}
+
+.fh{text-align:center;max-width:760px;margin:1rem auto 1rem}
+.fh h2{font-size:1.6rem;margin-top:.6rem}
+.fh p{margin-top:.45rem;color:var(--t2)}
+.rbdg{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .7rem;border-radius:999px;font-size:.72rem;font-weight:700;letter-spacing:.03em}
+.rbt{background:rgba(74,144,245,.16);color:var(--acc2);border:1px solid rgba(74,144,245,.45)}
+.rbs{background:rgba(30,216,160,.16);color:var(--grn2);border:1px solid rgba(30,216,160,.45)}
+
+.dw{width:100%;max-width:820px}
+.dw label{display:block;font-size:.74rem;letter-spacing:.06em;color:var(--t3);margin-bottom:.45rem}
+.csel select,.nsel{width:100%;background:var(--bg3);color:var(--t1);border:1px solid var(--b1);border-radius:10px;padding:.66rem .86rem;font-family:var(--font)}
+
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.85rem;width:100%;max-width:860px;margin-top:.85rem}
+.fcard{background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:.9rem;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.fcard:hover{transform:translateY(-2px);border-color:var(--b2)}
+.fcard.sel{border-color:var(--acc);box-shadow:0 0 0 1px rgba(74,144,245,.4) inset,0 8px 20px rgba(74,144,245,.16);animation:selPulse .25s ease}
+
+.bgo{margin-top:1rem;border:none;border-radius:10px;padding:.72rem 1.15rem;font-family:var(--font);font-weight:700;cursor:pointer}
+.bgo.blue{background:var(--acc);color:#fff}
+.bgo.green{background:var(--grn);color:#062115}
+.bgo:disabled{opacity:.45;cursor:not-allowed}
+
+.topbar{width:100%;max-width:1200px;display:flex;justify-content:space-between;gap:.8rem;align-items:center;padding:.65rem .8rem;border:1px solid var(--b1);border-radius:12px;background:var(--bg2);margin:0 auto .9rem}
+.tbl,.tbr{display:flex;align-items:center;gap:.62rem}
+.tlogo{font-weight:700;color:var(--acc2)}
+.tdiv{width:1px;height:18px;background:var(--b1)}
+.nsel{min-width:180px}
+.tbtn{border:1px solid var(--b1);background:var(--bg3);color:var(--t2);padding:.42rem .8rem;border-radius:8px;cursor:pointer;font-family:var(--font)}
+.uchip{display:flex;align-items:flex-start;gap:.4rem;padding:.35rem .58rem;border-radius:999px;background:var(--bg3);border:1px solid var(--b1);font-size:.76rem}
+.uchip-info{display:flex;flex-direction:column;gap:.1rem;line-height:1.2}
+.uchip-name{font-weight:700}
+.uchip-id{font-family:var(--mono);font-size:.65rem;color:var(--t3)}
+.chkrow{display:flex;align-items:center;gap:.55rem;font-size:.78rem;color:var(--t2)}
+.chkrow input{accent-color:var(--acc)}
+.udot{width:8px;height:8px;border-radius:50%}
+.udot.db{background:var(--acc)}
+.udot.sb{background:var(--grn)}
+
+.wrap{width:100%;max-width:1200px;margin:0 auto;padding:.35rem}
+.panel{display:none}
+.panel.on{display:block;animation:panelIn .3s ease}
+
+.ph{margin:.35rem 0 1rem}
+.ph h2{font-size:1.5rem;margin-top:.35rem}
+.ph p{margin-top:.4rem;color:var(--t2)}
+.eye{display:inline-block;padding:.28rem .62rem;border-radius:999px;font-size:.7rem;color:var(--acc2);background:rgba(74,144,245,.14);border:1px solid rgba(74,144,245,.35)}
+
+.steps{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.8rem}
+.step{padding:.36rem .64rem;border-radius:999px;font-size:.72rem;color:var(--t3);border:1px solid var(--b1);background:rgba(21,31,51,.7)}
+.step.act{color:var(--acc2);border-color:rgba(74,144,245,.5);background:rgba(74,144,245,.14)}
+.step.done{color:var(--grn2);border-color:rgba(30,216,160,.5);background:rgba(30,216,160,.14)}
+
+.card{background:var(--bg2);border:1px solid var(--b1);border-radius:var(--rl);padding:1.35rem;margin-bottom:1rem;animation:cardIn .3s ease}
+.ctitle{font-size:.72rem;font-weight:700;color:var(--t2);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.9rem}
+
+/* FORM */
+.fgrp{margin-bottom:.85rem}
+.fgrp label{display:block;font-size:.76rem;color:var(--t2);margin-bottom:.32rem}
+.finp,.ftxt,.fsel{width:100%;background:var(--bg3);border:1px solid var(--b1);color:var(--t1);padding:.62rem .88rem;border-radius:8px;font-family:var(--font);font-size:.86rem;transition:border-color .2s}
+.finp:focus,.ftxt:focus,.fsel:focus{outline:none;border-color:var(--acc)}
+.ftxt{resize:vertical;min-height:175px;line-height:1.65}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.95rem}
+.wc{font-size:.7rem;color:var(--t3);margin-top:.28rem}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:.38rem}
+.chip{padding:.26rem .62rem;border-radius:20px;font-size:.73rem;border:1px solid var(--b1);background:var(--bg3);cursor:pointer;transition:all .17s;user-select:none;color:var(--t2)}
+.chip:hover{border-color:var(--b2);color:var(--t1)}
+.chip.on{background:rgba(74,144,245,.18);border-color:var(--acc);color:var(--acc2)}
+.crows{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.7rem}
+.pmodes{display:flex;gap:.5rem;flex-wrap:wrap;margin:.85rem 0 1rem}
+
+/* BUTTONS */
+.ar{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.9rem}
+.btn,.bsm{display:flex;align-items:center;gap:.38rem;border:none;cursor:pointer;font-family:var(--font);font-weight:600;border-radius:9px;transition:all .2s}
+.btn{padding:.68rem 1.35rem;font-size:.83rem}
+.bsm{padding:.42rem .85rem;font-size:.75rem}
+.bl{background:var(--acc);color:#fff}.bl:hover{background:var(--acc2);color:#07090f}
+.bg{background:var(--grn);color:#07190f}.bg:hover{background:var(--grn2)}
+.bo{background:transparent;color:var(--t2);border:1px solid var(--b1)}.bo:hover{border-color:var(--b2);color:var(--t1)}
+.btn:disabled{opacity:.36;cursor:not-allowed}
+
+/* RESULTS */
+.res{display:none;margin-top:1.15rem}
+.res.on{display:block;animation:resultIn .3s ease}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:.65rem;margin-bottom:1.15rem}
+.sc{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r);padding:.85rem;text-align:center}
+.sc .sl{font-size:.68rem;color:var(--t2);margin-bottom:.28rem;letter-spacing:.05em}
+.sc .sv{font-size:1.45rem;font-weight:700}
+.svb{color:var(--acc2)}.svg{color:var(--grn)}.sva{color:var(--amb)}.svr{color:var(--red)}
+.fb{padding:.85rem 1rem;border-left:3px solid var(--acc);border-radius:0 8px 8px 0;background:rgba(74,144,245,.06);margin-bottom:.85rem}
+.fb.g{border-left-color:var(--grn);background:rgba(30,216,160,.06)}
+.fb p{font-size:.83rem;line-height:1.7;color:var(--t2)}
+.badge{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .85rem;border-radius:20px;font-size:.76rem;font-weight:700}
+.badge.pass{background:rgba(30,216,160,.18);color:var(--grn)}
+.badge.fail{background:rgba(245,96,96,.18);color:var(--red)}
+.ptbl{width:100%;border-collapse:collapse;font-size:.81rem}
+.ptbl th{color:var(--t3);font-weight:500;font-size:.7rem;letter-spacing:.05em;text-align:left;padding:.38rem .62rem;border-bottom:1px solid var(--b1)}
+.ptbl td{padding:.52rem .62rem;border-bottom:1px solid rgba(100,160,255,.05);vertical-align:middle}
+.ptbl tr:last-child td{border-bottom:none}
+.bw{display:flex;align-items:center;gap:.52rem}
+.bar{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.bf{height:100%;border-radius:3px;transition:width .5s ease}
+.bfg{background:var(--grn)}.bfb{background:var(--acc)}.bfa{background:var(--amb)}.bfr{background:var(--red)}
+
+/* QUIZ */
+.qblock{background:var(--bg2);border:1px solid var(--b1);border-radius:var(--rl);padding:1.15rem;margin-bottom:.85rem}
+.qnum{font-size:.7rem;color:var(--t3);font-family:var(--mono);margin-bottom:.28rem}
+.qcat{font-size:.66rem;color:var(--acc2);background:rgba(74,144,245,.12);padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:.6rem}
+.qtxt{font-size:.9rem;line-height:1.6;margin-bottom:.85rem}
+.opts{display:flex;flex-direction:column;gap:.42rem}
+.opt{display:flex;align-items:center;gap:.62rem;padding:.58rem .88rem;border-radius:8px;border:1px solid var(--b1);background:var(--bg3);cursor:pointer;transition:all .17s;font-size:.83rem}
+.opt:hover{border-color:var(--b2)}
+.opt.sel{border-color:var(--acc);background:rgba(74,144,245,.1);color:var(--acc2)}
+.opt.ok{border-color:var(--grn);background:rgba(30,216,160,.1);color:var(--grn)}
+.opt.ng{border-color:var(--red);background:rgba(245,96,96,.1);color:var(--red)}
+.opt.off{pointer-events:none}
+.olet{width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;background:var(--surf);color:var(--t2)}
+.expl{display:none;margin-top:.62rem;padding:.62rem .88rem;background:rgba(30,216,160,.07);border-left:2px solid var(--grn);border-radius:0 6px 6px 0;font-size:.78rem;color:var(--t2);line-height:1.6}
+.expl.on{display:block}
+
+.seq-head{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-bottom:.75rem}
+.timer-pill{font-family:var(--mono);font-size:.78rem;padding:.3rem .55rem;border-radius:999px;border:1px solid var(--b1);background:rgba(245,96,96,.12);color:var(--red)}
+.timer-pill.safe{background:rgba(30,216,160,.12);color:var(--grn);border-color:rgba(30,216,160,.35)}
+.timer-pill.warn{background:rgba(255,179,77,.15);color:var(--amb);border-color:rgba(255,179,77,.35)}
+.seq-nav{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-top:1rem;flex-wrap:wrap}
+
+/* CERT */
+.crow{display:flex;align-items:center;gap:.85rem;background:linear-gradient(135deg,rgba(74,144,245,.1),rgba(30,216,160,.07));border:1px solid rgba(74,144,245,.28);border-radius:var(--rl);padding:1.15rem;margin-top:1rem}
+.cic{width:46px;height:46px;border-radius:10px;background:rgba(74,144,245,.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.cinfo h3{font-size:.88rem;font-weight:600;margin-bottom:.18rem}
+.cinfo p{font-size:.76rem;color:var(--t2)}
+.bdl{margin-left:auto;padding:.52rem 1.05rem;border-radius:7px;font-family:var(--font);font-size:.76rem;font-weight:700;cursor:pointer;border:none;background:var(--acc);color:#fff;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.bdl:hover{background:var(--acc2);color:#07090f}
+
+/* STEPPER */
+.stepr{display:flex;align-items:center;gap:.62rem}
+.nbt{width:30px;height:30px;border-radius:7px;background:var(--surf);border:1px solid var(--b1);color:var(--t1);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.nbt:hover{border-color:var(--b2)}
+.nv{font-size:1.05rem;font-weight:700;min-width:1.5ch;text-align:center;font-family:var(--mono)}
+
+/* TAGS */
+.twrap{display:flex;flex-wrap:wrap;gap:.32rem;align-items:center;width:100%;background:var(--bg3);border:1px solid var(--b1);border-radius:8px;padding:.48rem .72rem;min-height:38px;transition:border-color .2s;cursor:text}
+.twrap:focus-within{border-color:var(--acc)}
+.ctag{background:rgba(74,144,245,.18);color:var(--acc2);padding:2px 7px;border-radius:20px;font-size:.73rem;display:flex;align-items:center;gap:.28rem}
+.ctag button{background:none;border:none;color:var(--acc2);cursor:pointer;font-size:.83rem;padding:0;line-height:1}
+.tinp{background:none;border:none;color:var(--t1);font-family:var(--font);font-size:.83rem;min-width:95px;outline:none}
+
+/* CAT STATS */
+.csr{display:flex;align-items:center;gap:.62rem;padding:.48rem 0;border-bottom:1px solid rgba(100,160,255,.05)}
+.csr:last-child{border-bottom:none}
+.csn{font-size:.81rem;color:var(--t2);min-width:105px}
+.cspct{font-size:.81rem;font-weight:700;min-width:40px;text-align:right}
+
+/* QBOX */
+.qbox{min-height:60px;padding:.75rem .9rem;background:var(--bg3);border-radius:8px;font-size:.88rem;color:var(--t2);line-height:1.7;border:1px solid var(--b1);margin-bottom:.7rem}
+.qbox.filled{color:var(--t1)}
+
+/* PROGRESS DASHBOARD */
+.progress-shell{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.9fr);gap:.9rem;align-items:start}
+.progress-hero,.progress-panel{background:linear-gradient(180deg,rgba(21,31,51,.98),rgba(12,19,33,.98));border:1px solid var(--b1);border-radius:20px;padding:1rem 1rem .95rem;box-shadow:0 16px 28px rgba(0,0,0,.12)}
+.progress-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.85rem;flex-wrap:wrap;margin-bottom:.9rem}
+.progress-kicker{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc2);background:rgba(74,144,245,.12);border:1px solid rgba(74,144,245,.28);padding:.26rem .56rem;border-radius:999px}
+.progress-title{font-size:1.05rem;font-weight:700;margin-top:.45rem}
+.progress-sub{font-size:.83rem;line-height:1.55;color:var(--t2);margin-top:.28rem}
+.progress-actions{display:flex;gap:.55rem;flex-wrap:wrap;justify-content:flex-end}
+.progress-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem;margin-top:.95rem}
+.pstat{padding:.76rem .82rem;border-radius:14px;border:1px solid var(--b1);background:rgba(255,255,255,.03)}
+.pstat .lbl{display:block;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:.22rem}
+.pstat .val{font-size:1.02rem;font-weight:700;color:var(--t1)}
+.pstat .hint{display:block;margin-top:.2rem;font-size:.72rem;color:var(--t3);line-height:1.4}
+.progress-list{display:flex;flex-direction:column;gap:.6rem}
+.progress-item{padding:.78rem .82rem;border-radius:14px;border:1px solid var(--b1);background:rgba(255,255,255,.03)}
+.progress-item-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.8rem;flex-wrap:wrap;margin-bottom:.34rem}
+.progress-item-title{font-weight:700;font-size:.9rem}
+.progress-item-meta,.progress-item-foot{font-size:.75rem;line-height:1.45;color:var(--t3)}
+.progress-item-foot{margin-top:.38rem}
+.progress-empty{padding:1rem;border:1px dashed rgba(148,163,184,.3);border-radius:14px;background:rgba(255,255,255,.02);color:var(--t2);font-size:.84rem;line-height:1.6}
+.progress-inline{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:.3rem;padding:.26rem .58rem;border-radius:999px;font-size:.68rem;font-weight:700;letter-spacing:.03em}
+.pill.acc{background:rgba(74,144,245,.15);color:var(--acc2);border:1px solid rgba(74,144,245,.3)}
+.pill.grn{background:rgba(30,216,160,.15);color:var(--grn2);border:1px solid rgba(30,216,160,.28)}
+.pill.dim{background:rgba(127,147,179,.12);color:var(--t2);border:1px solid rgba(127,147,179,.25)}
+.progress-divider{height:1px;background:linear-gradient(90deg,transparent,var(--b1),transparent);margin:1rem 0}
+
+body.progress-only .progress-shell{grid-template-columns:1fr}
+body.progress-only #student-returning-card,
+body.progress-only #student-details-card{display:none}
+body.progress-only #student-profile-wrap{max-width:860px}
+body.progress-only #s-prof .fh p,
+body.progress-only #s-prof .fh .rbdg{display:none}
+body.progress-only #s-prof .fh h2{margin-top:.1rem}
+
+body.kid-mode{--acc:#ff8a3d;--acc2:#ffb35c;--grn:#4cd964;--grn2:#7ef08e;--pur:#ff66c4}
+body.kid-mode::before{background-image:radial-gradient(circle at 20% 20%, rgba(255,138,61,.12) 0 10px, transparent 11px),radial-gradient(circle at 80% 30%, rgba(76,217,100,.11) 0 12px, transparent 13px),linear-gradient(rgba(74,144,245,.02) 1px, transparent 1px),linear-gradient(90deg,rgba(74,144,245,.02) 1px,transparent 1px);background-size:120px 120px,140px 140px,44px 44px,44px 44px}
+body.kid-mode .card,body.kid-mode .qbox,body.kid-mode .fcard,body.kid-mode .btn,body.kid-mode .bgo,body.kid-mode .tbtn,body.kid-mode .chip,body.kid-mode .scchip{border-radius:18px}
+body.kid-mode .qbox{background:linear-gradient(135deg,rgba(255,138,61,.12),rgba(76,217,100,.08));border-color:rgba(255,138,61,.25)}
+body.kid-mode .kid-box{background:linear-gradient(135deg,rgba(255,138,61,.12),rgba(155,122,245,.09));border:1px dashed rgba(255,179,92,.45);border-radius:18px;padding:1rem 1rem .9rem;box-shadow:0 0 0 1px rgba(255,255,255,.03) inset}
+body.kid-mode .kid-title{display:flex;align-items:center;gap:.55rem;font-size:.88rem;font-weight:700;color:var(--acc2);margin-bottom:.5rem}
+body.kid-mode .kid-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem}
+body.kid-mode .kid-btn{padding:.7rem .6rem;border-radius:14px;border:1px solid rgba(255,179,92,.35);background:rgba(255,255,255,.05);color:var(--t1);font-family:var(--font);font-weight:700;font-size:.8rem;cursor:pointer;transition:transform .15s,background .15s,border-color .15s}
+body.kid-mode .kid-btn:hover{transform:translateY(-2px);background:rgba(255,138,61,.12);border-color:rgba(255,138,61,.55)}
+body.kid-mode .kid-reward{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .6rem;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,179,92,.28);font-size:.74rem;color:var(--t1);margin-left:auto}
+body.kid-mode .kid-pop{animation:popBounce .45s ease}
+@keyframes popBounce{0%{transform:scale(.96)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
+
+/* SUBCATS */
+.scbox{display:none;margin-top:.72rem}
+.scbox.on{display:block}
+.scl{font-size:.73rem;color:var(--t2);margin-bottom:.45rem}
+.scchips{display:flex;flex-wrap:wrap;gap:.38rem}
+.scchip{padding:.26rem .62rem;border-radius:20px;font-size:.73rem;border:1px solid var(--b1);background:var(--bg3);cursor:pointer;transition:all .17s;color:var(--t2)}
+.scchip:hover{border-color:var(--b2);color:var(--t1)}
+.scchip.on{background:rgba(155,122,245,.2);border-color:var(--pur);color:var(--pur)}
+
+/* LOADING */
+#ov{position:fixed;inset:0;background:rgba(7,9,15,.83);display:none;align-items:center;justify-content:center;z-index:999;backdrop-filter:blur(3px)}
+#ov.on{display:flex}
+.spinb{text-align:center}
+.spin{width:42px;height:42px;border:3px solid var(--b2);border-top-color:var(--acc);border-radius:50%;animation:sp .75s linear infinite;margin:0 auto .8rem}
+@keyframes sp{to{transform:rotate(360deg)}}
+.spinb p{font-size:.83rem;color:var(--t2)}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.65rem;right:1.65rem;padding:.62rem 1.05rem;border-radius:9px;font-size:.81rem;font-weight:600;transform:translateY(75px);opacity:0;transition:all .3s ease;z-index:9999}
+.toast.ok{background:rgba(30,216,160,.2);border:1px solid var(--grn);color:var(--grn)}
+.toast.err{background:rgba(245,96,96,.2);border:1px solid var(--red);color:var(--red)}
+.toast.info{background:rgba(74,144,245,.2);border:1px solid var(--acc);color:var(--acc2)}
+.toast.show{transform:translateY(0);opacity:1}
+
+body.light-mode{
+  --bg:#f3f6fb;
+  --bg2:#ffffff;
+  --bg3:#eef3fb;
+  --surf:#dce7f8;
+  --t1:#15233b;
+  --t2:#3f5475;
+  --t3:#6d7f9e;
+  --b1:#c8d8f1;
+  --b2:#9cb8e3;
+  --acc:#2f74d8;
+  --acc2:#4e8de7;
+  --grn:#1fa56a;
+  --grn2:#32bf81;
+  --amb:#c98120;
+  --red:#d24e4e;
+}
+body.light-mode::before{opacity:.12}
+
+.light-mode .topbar{box-shadow:0 8px 24px rgba(25,42,72,.08)}
+.light-mode .tbtn,.light-mode .back{background:var(--bg3);border-color:var(--b1);color:var(--t2)}
+.light-mode .tbtn:hover,.light-mode .back:hover{border-color:var(--b2);color:var(--t1)}
+.light-mode .uchip{background:var(--bg3);border-color:var(--b1)}
+.light-mode .uchip-id{color:var(--t3)}
+
+.prog-wrap{width:220px;height:8px;background:rgba(255,255,255,.12);border:1px solid var(--b1);border-radius:999px;margin:.5rem auto 0 auto;overflow:hidden}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--acc),var(--grn));transition:width .35s ease}
+
+@media print{
+  body{background:#fff !important;color:#111 !important}
+  .topbar,.back,.btn,.bsm,.bdl,.toast,#ov,#coach-actions,#coach-followup{display:none !important}
+  .card,.qblock,.sc{break-inside:avoid}
+  .scr{display:block !important;min-height:auto;padding:0}
+}
+
+@keyframes screenIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes resultIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes selPulse{0%{transform:scale(.99)}100%{transform:scale(1)}}
+
+@media(max-width:600px){
+  .role-row{flex-direction:column;align-items:center}
+  .fg{grid-template-columns:1fr}
+  .g2{grid-template-columns:1fr}
+  .logo-wrap h1{font-size:2rem}
+  .wrap{padding:1rem}
+}
+
+@media(max-width:900px){
+  .progress-shell{grid-template-columns:1fr}
+  .progress-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .progress-actions{justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- ██ LANDING ██ -->
+<div id="s-land" class="scr on">
+  <div class="logo-wrap">
+    <div class="logo-hex"><img src="logo.png" alt="AgenixAI logo" style="width:40px;height:40px;object-fit:contain;"></div>
+    <h1>AgenixAI</h1>
+    <p>INTELLIGENT LEARNING PLATFORM</p>
+  </div>
+  <div class="role-row">
+    <div class="rc t">
+      <div class="ri t">🎓</div>
+      <div style="margin-bottom:.65rem"><span class="tpri tblue">EVALUATE — primary</span> <span class="tpri tdim">generate — secondary</span></div>
+      <h2>Teacher</h2>
+      <p class="desc">Evaluate student essays & quizzes with AI scoring, generate questions, and download certificates & reports.</p>
+      <button class="bm t" onclick="goRole('teacher','evaluate')">📋 Evaluate — Start Here</button>
+      <button class="bs" onclick="goRole('teacher','generate')">✨ Generate Content</button>
+    </div>
+    <div class="rc s">
+      <div class="ri s">📚</div>
+      <div style="margin-bottom:.65rem"><span class="tpri tgreen">GENERATE — primary</span> <span class="tpri tdim">evaluate — secondary</span></div>
+      <h2>Student</h2>
+      <p class="desc">Take AI-generated quizzes, write essays, and get instant detailed feedback with category-wise performance.</p>
+      <button class="bm s" onclick="goRole('student','generate')">🚀 Start Practicing</button>
+      <button class="bs" onclick="goRole('student','evaluate')">📊 Check My Progress</button>
+    </div>
+  </div>
+  <div style="max-width:1180px;margin:1rem auto 0 auto;display:flex;justify-content:flex-start">
+    <button class="bs" style="min-width:220px" onclick="toggleCandidateDetails()">👤 Details of Candidates</button>
+  </div>
+  <div id="candidate-details-modal" class="cdm" onclick="if(event.target===this)toggleCandidateDetails()">
+    <div class="cdm-card">
+      <div id="candidate-details-panel"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ██ STUDENT PROFILE ██ -->
+<div id="s-prof" class="scr">
+  <button class="back" onclick="show('s-land')">← Back</button>
+  <div class="fh">
+    <div class="rbdg rbs">📚 Student Profile</div>
+    <h2>Enter Details Once</h2>
+    <p id="prof-hint">We will reuse this profile for Essay, Quiz, and Paragraph Reading.</p>
+  </div>
+  <div id="prof-greet" class="qbox" style="max-width:560px;width:100%;margin:0 auto 1rem auto;display:none"></div>
+  <div id="kid-profile-tip" class="qbox kid-box" style="max-width:560px;width:100%;margin:0 auto 1rem auto;display:none"></div>
+  <div class="dw" id="student-profile-wrap" style="max-width:560px">
+    <div class="card" id="student-returning-card" style="margin-bottom:.8rem">
+      <div class="ctitle">Returning Student</div>
+      <div class="fgrp" style="margin-bottom:.55rem">
+        <label>Student ID <span style="color:var(--t3)">(optional if already saved)</span></label>
+        <div class="g2" style="grid-template-columns:1fr auto;align-items:end">
+          <input id="sp-existing-id" class="finp" placeholder="e.g. AGI-MM-YY-###" style="margin-bottom:0">
+          <button class="btn bo" style="padding:.58rem .95rem" onclick="fetchStudentProfileById()">Fetch Profile</button>
+        </div>
+      </div>
+      <div id="sp-id-display" class="qbox" style="min-height:auto;margin-bottom:.55rem">Student ID will appear here after saving your profile.</div>
+      <div id="sp-perf-summary" class="wc">Performance history will auto-fill after each Essay, Quiz, and Paragraph Reading attempt.</div>
+    </div>
+      <div class="progress-shell" style="margin-bottom:.8rem">
+        <div class="progress-hero">
+          <div class="progress-head">
+            <div>
+              <div class="progress-kicker">Progress Lookup</div>
+              <div class="progress-title">Check progress with your unique Student ID</div>
+              <div class="progress-sub">Load a clean summary of which features were used, when they were used, and how the student performed across attempts.</div>
+            </div>
+            <div class="progress-actions">
+              <button class="btn bg" style="padding:.58rem .95rem" onclick="fetchStudentProgressById()">Check Progress</button>
+              <button class="btn bo" style="padding:.58rem .95rem" onclick="downloadStudentProgressReport()">⬇ Download Report</button>
+            </div>
+          </div>
+          <div class="fgrp" style="margin-bottom:.7rem">
+            <label>Unique Student ID</label>
+            <div class="g2" style="grid-template-columns:1fr auto;align-items:end">
+              <input id="sp-progress-id" class="finp" placeholder="Enter your unique Student ID" style="margin-bottom:0">
+              <button class="btn bg" style="padding:.58rem .95rem" onclick="fetchStudentProgressById()">Load</button>
+            </div>
+          </div>
+          <div id="sp-progress-summary" class="qbox" style="min-height:auto;margin-bottom:.7rem">Enter your unique ID to load feature history, timestamps, and performance details.</div>
+          <div class="progress-divider"></div>
+          <div class="progress-stats" id="sp-progress-stats"></div>
+        </div>
+        <div class="progress-panel">
+          <div class="progress-head" style="margin-bottom:.65rem">
+            <div>
+              <div class="progress-kicker">Recent Activity</div>
+              <div class="progress-title" style="font-size:.98rem">Feature timeline</div>
+            </div>
+          </div>
+          <div id="sp-progress-history" class="progress-list">
+            <div class="progress-empty">Progress history will appear here after lookup.</div>
+          </div>
+        </div>
+      </div>
+    <div class="card" id="student-details-card" style="margin-bottom:0">
+      <div class="ctitle">Student Details (Minimal)</div>
+      <div class="g2">
+        <div class="fgrp" style="margin-bottom:0"><label>Your Name</label><input id="sp-nm" class="finp" placeholder="Enter your name"></div>
+        <div class="fgrp" style="margin-bottom:0"><label>Class / Grade</label><select id="sp-cls" class="fsel"><option value="">Select Class</option><option value="1">Class 1</option><option value="2">Class 2</option><option value="3">Class 3</option><option value="4">Class 4</option><option value="5">Class 5</option><option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option><option value="12">Class 12</option></select></div>
+      </div>
+      <div class="g2" style="margin-top:.85rem">
+        <div class="fgrp" style="margin-bottom:0"><label>Board</label><select id="sp-board" class="fsel"><option value="">Select Board</option><option value="CBSE">CBSE</option><option value="ICSE">ICSE</option><option value="State Board">State Board</option><option value="IB">IB</option><option value="IGCSE">IGCSE</option><option value="Other">Other</option></select></div>
+        <div class="fgrp" style="margin-bottom:0"><label>Language</label><select id="sp-lang" class="fsel"><option value="">Select Language</option><option value="English">English</option><option value="Kannada">Kannada</option><option value="Hindi">Hindi</option></select></div>
+      </div>
+      <div class="g2" style="margin-top:.85rem">
+        <div class="fgrp" style="margin-bottom:0"><label>Learning Pace</label><select id="sp-learning-pace" class="fsel"><option value="">Select Pace</option><option value="slow">Slow</option><option value="average">Average</option><option value="fast">Fast</option></select></div>
+      </div>
+      <div class="g2" style="margin-top:.85rem">
+        <div class="fgrp" style="margin-bottom:0"><label>Daily Study Time Available (minutes/day)</label><input id="sp-study-min" class="finp" type="number" min="0" step="5" placeholder="e.g. 30"></div>
+        <div class="fgrp" style="margin-bottom:0"><label>Self-level</label><select id="sp-self-level" class="fsel"><option value="">Select Level</option><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select></div>
+      </div>
+      <div class="g2" style="margin-top:.85rem">
+        <div class="fgrp" style="margin-bottom:0"><label>Gamified</label><select id="sp-gamified" class="fsel"><option value="">Select Preference</option><option value="yes">Yes</option><option value="no">No</option></select></div>
+        <div class="fgrp" style="margin-bottom:0"><label>Attention Span</label><select id="sp-attention-span" class="fsel"><option value="">Select Span</option><option value="<10 min">&lt;10 min</option><option value="10-20 min">10-20 min</option><option value=">20 min">&gt;20 min</option></select></div>
+      </div>
+      <div class="g2" style="margin-top:.85rem">
+        <div class="fgrp" style="margin-bottom:0"><label>What do you struggle with most?</label><select id="sp-struggle-area" class="fsel"><option value="">Select One</option><option value="Understanding concepts">Understanding concepts</option><option value="Remembering">Remembering</option><option value="Solving problems">Solving problems</option><option value="Writing answers">Writing answers</option><option value="Exam fear">Exam fear</option></select></div>
+      </div>
+      <div class="ctitle" style="margin-top:1rem">When do you study? (hours per day)</div>
+      <div class="g2" style="margin-top:.2rem">
+        <div class="fgrp" style="margin-bottom:0"><label>🌅 Morning (5-9 AM)</label><input id="sp-study-morning" class="finp" type="number" min="0" step="0.5" placeholder="e.g. 1"></div>
+        <div class="fgrp" style="margin-bottom:0"><label>☀️ Afternoon (12-5 PM)</label><input id="sp-study-afternoon" class="finp" type="number" min="0" step="0.5" placeholder="e.g. 1"></div>
+      </div>
+      <div class="g2" style="margin-top:.2rem">
+        <div class="fgrp" style="margin-bottom:0"><label>🌆 Evening (5-8 PM)</label><input id="sp-study-evening" class="finp" type="number" min="0" step="0.5" placeholder="e.g. 1"></div>
+        <div class="fgrp" style="margin-bottom:0"><label>🌙 Night (8-11 PM)</label><input id="sp-study-night" class="finp" type="number" min="0" step="0.5" placeholder="e.g. 1"></div>
+      </div>
+      <div class="ctitle" style="margin-top:1rem">Optional</div>
+      <div class="g2" style="margin-top:.2rem">
+        <div class="fgrp" style="margin-bottom:0"><label>Preferred Subject</label><input id="sp-subject" class="finp" placeholder="e.g. Science, History"></div>
+        <div class="fgrp" style="margin-bottom:0"><label>Preferred Explanation Style</label><select id="sp-explain-style" class="fsel"><option value="">Auto</option><option value="Short & crisp">Short & crisp</option><option value="Detailed">Detailed</option><option value="Step-by-step">Step-by-step</option><option value="Example-based">Example-based</option></select></div>
+      </div>
+      <div class="ar" style="margin-top:1rem">
+        <button class="btn bg" onclick="saveStudentProfileAndContinue()">✅ Save & Continue</button>
+        <button class="btn bo" onclick="show('s-land')">Switch Role</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ██ FEATURE PICK ██ -->
+<div id="s-feat" class="scr">
+  <button class="back" onclick="show('s-land')">← Back</button>
+  <div class="fh">
+    <div id="f-badge" class="rbdg rbt">🎓 Teacher</div>
+    <h2>Choose Your Feature</h2>
+    <p id="feat-hint">Select what you would like to work on today.</p>
+  </div>
+  <div id="feat-greet" class="qbox" style="max-width:820px;width:100%;margin:0 auto 1rem auto;display:none"></div>
+  <div style="max-width:820px;width:100%;margin:0 auto .85rem auto;display:flex;justify-content:flex-start">
+    <button class="btn bo" style="padding:.58rem .95rem" onclick="editStudentDetails()">✏ Edit Details</button>
+  </div>
+  <div class="dw">
+    <div class="card" style="margin-bottom:.85rem">
+      <div class="ctitle">Feature Selector</div>
+      <div class="fgrp" style="margin-bottom:0">
+        <label>Pick a module</label>
+        <select id="fdrop" class="fsel" onchange="onFDrop()">
+          <option value="">Select a feature</option>
+          <option value="essay">Essay</option>
+          <option value="quiz">Quiz</option>
+          <option value="prq">Paragraph Reading</option>
+        </select>
+      </div>
+      <div id="fopts" class="fg" style="margin-top:.9rem;display:none"></div>
+    </div>
+    <button id="bgo" class="bgo blue" disabled onclick="launch()">Continue</button>
+  </div>
+</div>
+
+<!-- ██ APP ██ -->
+<div id="s-app" class="scr">
+  <nav class="topbar">
+    <div class="tbl">
+      <div class="tlogo">AgenixAI</div>
+      <div class="tdiv"></div>
+      <select id="nsel" class="nsel" onchange="switchPanel()">
+        <option value="essay">Essay</option>
+        <option value="quiz">Quiz</option>
+        <option value="prq">Paragraph Reading</option>
+      </select>
+    </div>
+    <div class="tbr">
+      <div class="uchip"><span id="udot" class="udot db"></span><div class="uchip-info"><span id="ulbl" class="uchip-name">Teacher</span><span id="uidbl" class="uchip-id" style="display:none"></span></div></div>
+      <button class="tbtn" onclick="toggleTheme()">🌓 Theme</button>
+      <button class="back" style="padding:.32rem .7rem" onclick="show('s-feat')">← Back</button>
+      <button class="tbtn" onclick="show('s-land')">Switch Role</button>
+    </div>
+  </nav>
+    <div id="coach-greet" class="qbox" style="display:none;margin-bottom:1rem"></div>
+    <div id="coach-followup" class="fb" style="display:none"></div>
+    <div id="coach-actions" class="crows" style="margin-top:.7rem;margin-bottom:1rem;display:none">
+      <button class="bsm bo" onclick="coachNudge('warmup')">✨ Warm-up Tip</button>
+      <button class="bsm bo" onclick="coachNudge('next')">🧭 Next Step</button>
+      <button class="bsm bo" onclick="coachNudge('motivate')">💬 Motivate Me</button>
+    </div>
+    <!-- ▌ ESSAY ▌ -->
+    <div id="p-essay" class="panel on">
+
+      <!-- TEACHER ESSAY -->
+      <div id="eT">
+        <div class="steps">
+          <div class="step act" id="eT1">1 · Configure</div>
+          <div class="step" id="eT2">2 · Essay Input</div>
+          <div class="step" id="eT3">3 · Results</div>
+        </div>
+        <div class="ph">
+          <div style="display:flex;justify-content:flex-start;margin-bottom:.55rem"><button class="back" style="padding:.32rem .7rem" onclick="show('s-feat')">← Back</button></div>
+          <div class="eye">ESSAY — TEACHER</div>
+          <h2>Evaluate Essay</h2>
+          <p>Paste a student essay, pick evaluation parameters, and get AI-powered scores with per-parameter feedback.</p>
+        </div>
+
+        <div class="card">
+          <div class="ctitle">Candidate & Topic</div>
+          <div class="g2">
+            <div class="fgrp" style="margin-bottom:0"><label>Candidate Name</label><input id="eT-nm" class="finp" placeholder="e.g. Arjun Sharma"></div>
+            <div class="fgrp" style="margin-bottom:0"><label>Topic / Question Basis</label><input id="eT-tp" class="finp" placeholder="e.g. Climate Change"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ctitle">Evaluation Parameters <span style="text-transform:none;font-weight:400;color:var(--t3);font-size:.68rem">(choose 5 of 14)</span></div>
+          <div class="chips" id="eT-chips"></div>
+          <div class="crows">
+            <button class="bsm bo" onclick="clrPar()">Clear</button>
+            <button class="bsm bo" onclick="preset()">Default 5</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ctitle">Generate Question (optional)</div>
+          <div class="ar" style="margin-top:0;margin-bottom:.7rem">
+            <button class="bsm bl" onclick="genQ('T')">✨ Generate from Topic</button>
+          </div>
+          <div id="eT-qb" class="qbox">Type a topic above and click "Generate Question", or skip and paste the essay directly.</div>
+          <div class="ctitle" style="margin-top:.9rem;margin-bottom:.5rem">Essay Text</div>
+          <textarea id="eT-ess" class="ftxt" placeholder="Paste the student's essay here (minimum 100 words)…" oninput="wcnt('eT-ess','eT-wc')"></textarea>
+          <div class="wc" id="eT-wc">0 words</div>
+        </div>
+
+        <div class="ar">
+          <button class="btn bl" onclick="evalEssay('T')">🔍 Evaluate Essay</button>
+          <button class="btn bo" onclick="clrEssay('T')">↺ Clear</button>
+        </div>
+        <div id="eT-res" class="res"><div class="card"><div class="ctitle">Evaluation Results</div><div id="eT-rb"></div></div></div>
+      </div>
+
+      <!-- STUDENT ESSAY -->
+      <div id="eS" style="display:none">
+        <div class="steps">
+          <div class="step act" id="eS1">1 · Get Question</div>
+          <div class="step" id="eS2">2 · Write Essay</div>
+          <div class="step" id="eS3">3 · Feedback</div>
+        </div>
+        <div class="ph">
+          <div style="display:flex;justify-content:flex-start;margin-bottom:.55rem"><button class="back" style="padding:.32rem .7rem" onclick="show('s-feat')">← Back</button></div>
+          <div class="eye">ESSAY — STUDENT</div>
+          <h2>Write & Get Feedback</h2>
+          <p>Generate an essay question on any topic, write your response, and get AI feedback instantly.</p>
+        </div>
+
+        <div class="card">
+          <div class="ctitle">Profile (Auto-filled)</div>
+          <div class="g2">
+            <div class="fgrp" style="margin-bottom:0"><label>Your Name</label><input id="eS-nm" class="finp" placeholder="Auto from profile" readonly></div>
+            <div class="fgrp" style="margin-bottom:0"><label>Topic or Theme</label><input id="eS-tp" class="finp" placeholder="e.g. Artificial Intelligence"></div>
+            <div class="fgrp" style="margin-bottom:0"><label>Class / Grade</label><select id="eS-cls" class="fsel" disabled><option value="">Select Class</option><option value="1">Class 1</option><option value="2">Class 2</option><option value="3">Class 3</option><option value="4">Class 4</option><option value="5">Class 5</option><option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option><option value="12">Class 12</option></select></div>
+            <div class="fgrp" style="margin-bottom:0"><label>Curriculum / Board</label><select id="eS-board" class="fsel" disabled><option value="">Select Board</option><option value="CBSE">CBSE</option><option value="ICSE">ICSE</option><option value="State Board">State Board</option><option value="IB">IB</option><option value="IGCSE">IGCSE</option><option value="Other">Other</option></select></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ctitle">Essay Question</div>
+          <div id="eS-qb" class="qbox">Click "Generate Question" to get your essay prompt.</div>
+          <div class="ar" style="margin-top:.7rem;margin-bottom:0">
+            <button class="btn bg" onclick="genQ('S')">✨ Generate Question</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ctitle">Your Essay</div>
+          <textarea id="eS-ess" class="ftxt" placeholder="Write your essay here (minimum 100 words)…" oninput="wcnt('eS-ess','eS-wc')"></textarea>
+          <div class="wc" id="eS-wc">0 words</div>
+        </div>
+
+        <div class="ar">
+          <button class="btn bg" onclick="evalEssay('S')">📊 Get Feedback</button>
+          <button class="btn bo" onclick="clrEssay('S')">↺ Clear</button>
+        </div>
+        <div id="eS-res" class="res"><div class="card"><div class="ctitle">Your Feedback</div><div id="eS-rb"></div></div></div>
+      </div>
+    </div>
+
+    <!-- ▌ QUIZ ▌ -->
+    <div id="p-quiz" class="panel">
+
+      <!-- TEACHER QUIZ -->
+      <div id="qT">
+        <div class="steps">
+          <div class="step act" id="qT1">1 · Configure</div>
+          <div class="step" id="qT2">2 · Take Quiz</div>
+          <div class="step" id="qT3">3 · Results</div>
+        </div>
+        <div class="ph">
+          <div style="display:flex;justify-content:flex-start;margin-bottom:.55rem"><button class="back" style="padding:.32rem .7rem" onclick="show('s-feat')">← Back</button></div>
+          <div class="eye">QUIZ — TEACHER</div>
+          <h2>Generate &amp; Evaluate Quiz</h2>
+          <p>Configure a quiz for a student, answer questions to demo or review, then evaluate performance.</p>
+        </div>
+
+        <div class="card">
+          <div class="ctitle">Quiz Configuration</div>
+          <div class="g2">
+            <div class="fgrp"><label>Candidate Name</label><input id="qT-nm" class="finp" placeholder="e.g. Priya Menon"></div>
+            <div class="fgrp"><label>Topic <span style="color:var(--t3)">(English)</span></label><input id="qT-tp" class="finp" placeholder="e.g. Python Programming" oninput="debounceSub('T')"></div>
+            <div class="fgrp">
+              <label>Difficulty</label>
+              <select id="qT-diff" class="fsel"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select>
+            </div>
+            <div class="fgrp">
+              <label>Language</label>
+              <select id="qT-lang" class="fsel"><option value="English">English</option><option value="Kannada">Kannada</option><option value="Hindi">Hindi</option></select>
+            </div>
+          </div>
+          <div class="fgrp">
+            <label>Number of Questions</label>
+            <div class="stepr"><button class="nbt" onclick="adj('T',-1)">−</button><span class="nv" id="qT-cnt">5</span><button class="nbt" onclick="adj('T',1)">+</button></div>
+          </div>
+          <div class="fgrp chkrow">
+            <label style="margin-bottom:0"><input id="qT-timed" type="checkbox"> Enable Timed Quiz</label>
+          </div>
+          <div class="fgrp" style="margin-bottom:0">
+            <label>Time Limit / Question (seconds, 0 = no limit)</label>
+            <input id="qT-time-limit" class="finp" type="number" min="0" step="5" value="0">
+          </div>
+          <div class="scbox" id="qT-scbox">
+            <div class="scl">📂 Suggested Subcategories — click to select one or more, or leave blank for none</div>
+            <div class="scchips" id="qT-scc"></div>
+          </div>
+          <div class="fgrp" style="margin-top:.85rem;margin-bottom:0">
+            <label>Custom Focus Categories <span style="color:var(--t3)">(press Enter to add)</span></label>
+            <div class="twrap" id="qT-tw" onclick="document.getElementById('qT-ti').focus()">
+              <input class="tinp" id="qT-ti" placeholder="Type & press Enter…" onkeydown="addTag(event,'T')">
+            </div>
+          </div>
+        </div>
+
+        <div class="ar">
+          <button class="btn bl" onclick="genQuiz('T')">🧩 Generate Quiz</button>
+          <button class="btn bo" onclick="clrQuiz('T')">↺ Clear</button>
+        </div>
+
+        <div id="qT-qs" class="res">
+          <div class="card">
+            <div class="ctitle">Generated Quiz</div>
+            <div id="qT-qb"></div>
+          </div>
+        </div>
+        <div id="qT-res" class="res"><div class="card"><div class="ctitle">Quiz Results</div><div id="qT-rb"></div></div></div>
+      </div>
+
+      <!-- STUDENT QUIZ -->
+      <div id="qS" style="display:none">
+        <div class="steps">
+          <div class="step act" id="qS1">1 · Setup</div>
+          <div class="step" id="qS2">2 · Take Quiz</div>
+          <div class="step" id="qS3">3 · Results</div>
+        </div>
+        <div class="ph">
+          <div style="display:flex;justify-content:flex-start;margin-bottom:.55rem"><button class="back" style="padding:.32rem .7rem" onclick="show('s-feat')">← Back</button></div>
+          <div class="eye">QUIZ — STUDENT</div>
+          <h2>Take a Quiz</h2>
+          <p>Choose topic and difficulty, answer every question, then see your detailed score breakdown.</p>
+        </div>
+
+        <div class="card">
+          <div class="ctitle">Quiz Setup</div>
+          <div class="g2">
+            <div class="fgrp"><label>Your Name</label><input id="qS-nm" class="finp" placeholder="Auto from profile" readonly></div>
+            <div class="fgrp"><label>Topic <span style="color:var(--t3)">(English)</span></label><input id="qS-tp" class="finp" placeholder="e.g. World History" oninput="debounceSub('S')"></div>
+            <div class="fgrp"><label>Class / Grade</label><select id="qS-cls" class="fsel" disabled><option value="">Select Class</option><option value="1">Class 1</option><option value="2">Class 2</option><option value="3">Class 3</option><option value="4">Class 4</option><option value="5">Class 5</option><option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option><option value="12">Class 12</option></select></div>
+            <div class="fgrp"><label>Curriculum / Board</label><select id="qS-board" class="fsel" disabled><option value="">Select Board</option><option value="CBSE">CBSE</option><option value="ICSE">ICSE</option><option value="State Board">State Board</option><option value="IB">IB</option><option value="IGCSE">IGCSE</option><option value="Other">Other</option></select></div>
+            <div class="fgrp">
+              <label>Difficulty</label>
+              <select id="qS-diff" class="fsel"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select>
+            </div>
+            <div class="fgrp">
+              <label>Language</label>
+              <select id="qS-lang" class="fsel" disabled><option value="English">English</option><option value="Kannada">Kannada</option><option value="Hindi">Hindi</option></select>
+            </div>
+          </div>
+          <div class="fgrp">
+            <label>Number of Questions</label>
+            <div class="stepr"><button class="nbt" onclick="adj('S',-1)">−</button><span class="nv" id="qS-cnt">5</span><button class="nbt" onclick="adj('S',1)">+</button></div>
+          </div>
+          <div class="fgrp chkrow">
+            <label style="margin-bottom:0"><input id="qS-timed" type="checkbox"> Enable Timed Quiz</label>
+          </div>
+          <div class="fgrp" style="margin-bottom:0">
+            <label>Time Limit / Question (seconds, 0 = no limit)</label>
+            <input id="qS-time-limit" class="finp" type="number" min="0" step="5" value="0">
+          </div>
+          <div class="scbox" id="qS-scbox">
+            <div class="scl">📂 Suggested Subcategories — click to select one or more, or leave blank for none</div>
+            <div class="scchips" id="qS-scc"></div>
+          </div>
+          <div class="fgrp" style="margin-top:.85rem;margin-bottom:0">
+            <label>Custom Focus Categories <span style="color:var(--t3)">(press Enter)</span></label>
+            <div class="twrap" id="qS-tw" onclick="document.getElementById('qS-ti').focus()">
+              <input class="tinp" id="qS-ti" placeholder="Type & press Enter…" onkeydown="addTag(event,'S')">
+            </div>
+          </div>
+        </div>
+
+        <div class="ar">
+          <button class="btn bg" onclick="genQuiz('S')">🚀 Generate Quiz</button>
+          <button class="btn bo" onclick="clrQuiz('S')">↺ Clear</button>
+        </div>
+
+        <div id="qS-qs" class="res">
+          <div class="card">
+            <div class="ctitle">Your Quiz</div>
+            <div id="qS-qb"></div>
+          </div>
+        </div>
+        <div id="qS-res" class="res"><div class="card"><div class="ctitle">Your Score</div><div id="qS-rb"></div></div></div>
+      </div>
+    </div>
+
+    <!-- ▌ PRQ ▌ -->
+    <div id="p-prq" class="panel">
+
+      <!-- TEACHER PRQ -->
+      <div id="pT">
+        <div class="steps">
+          <div class="step act" id="pT1">1 · Configure</div>
+          <div class="step" id="pT2">2 · Answer</div>
+          <div class="step" id="pT3">3 · Results</div>
+        </div>
+        <div class="ph">
+          <div style="display:flex;justify-content:flex-start;margin-bottom:.55rem"><button class="back" style="padding:.32rem .7rem" onclick="show('s-feat')">← Back</button></div>
+          <div class="eye">PARAGRAPH READING — TEACHER</div>
+          <h2>Paragraph Reading Practice</h2>
+          <p>Paste a paragraph, generate comprehension questions, submit answers, and continue until you finish the session.</p>
+        </div>
+
+        <div class="pmodes">
+          <button id="pT-mode-generate" class="btn bg" onclick="setPrqMode('T','generate')">Paragraph → Questions</button>
+          <button id="pT-mode-topic" class="btn bo" onclick="setPrqMode('T','topic')">Topic → Paragraph + Questions</button>
+          <button id="pT-mode-review" class="btn bo" onclick="setPrqMode('T','review')">Paste & Evaluate</button>
+          <button id="pT-mode-custom" class="btn bo" onclick="setPrqMode('T','custom')">Custom Paragraph Reading</button>
+        </div>
+
+        <div id="prq-custom-T" class="card" style="display:none">
+          <div class="ctitle">Custom Paragraph Reading Controls</div>
+          <div class="g2">
+            <div class="fgrp" style="margin-bottom:0"><label>Paragraph</label><select id="pT-own-par" class="fsel" onchange="setPrqOwnership('T','paragraph',this.value)"><option value="agent">Agent</option><option value="myself">Myself</option></select></div>
+            <div class="fgrp" style="margin-bottom:0"><label>Question</label><select id="pT-own-que" class="fsel" onchange="setPrqOwnership('T','question',this.value)"><option value="agent">Agent</option><option value="myself">Myself</option></select></div>
+            <div class="fgrp" style="margin-bottom:0"><label>Answer</label><select id="pT-own-ans" class="fsel" onchange="setPrqOwnership('T','answer',this.value)"><option value="agent">Agent</option><option value="myself">Myself</option></select></div>
+            <div class="fgrp" style="margin-bottom:0"><label>Evaluation</label><div class="qbox" style="min-height:auto">Agent evaluation is always enabled for Custom Paragraph Reading.</div></div>
+          </div>
+          <div class="qbox" style="margin-top:.8rem">Choose who provides the paragraph, who creates the questions, and who supplies the answers. The app will show the matching input panels automatically.</div>
+        </div>
+
+        <div id="prq-generate-T" class="card">
+          <div class="ctitle">Configuration</div>
+          <div class="g2">
+            <div class="fgrp"><label>Candidate Name</label><input id="pT-nm" class="finp" placeholder="e.g. Nisha Rao"></div>
+            <div class="fgrp"><label>Difficulty</label><select id="pT-diff" class="fsel"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select></div>
+          </div>
+          <div class="fgrp" style="margin-top:.8rem;margin-bottom:0">
+            <label>Number of Questions</label>
+            <div class="stepr"><button class="nbt" onclick="adjPrq('T',-1)">−</button><span class="nv" id="pT-cnt">5</span><button class="nbt" onclick="adjPrq('T',1)">+</button></div>
+          </div>
+        </div>
+
+        <div id="prq-pass-T" class="card">
+          <div class="ctitle">Paste Paragraph for Questions</div>
+          <textarea id="pT-pass" class="ftxt" placeholder="Paste paragraph here (minimum 50 words)…" oninput="wcnt('pT-pass','pT-wc')"></textarea>
+          <div class="wc" id="pT-wc">0 words</div>
+        </div>
+
+        <div id="prq-topic-T" class="card" style="display:none">
+          <div class="ctitle">Topic Only</div>
+          <div class="g2">
+            <div class="fgrp"><label>Topic / Question</label><input id="pT-topic" class="finp" placeholder="e.g. Pollution and public health"></div>
+            <div class="fgrp"><label>Question Count</label><div class="stepr"><button class="nbt" onclick="adjPrq('T',-1)">−</button><span class="nv" id="pT-topic-cnt">5</span><button class="nbt" onclick="adjPrq('T',1)">+</button></div></div>
+          </div>
+          <div class="g2" style="margin-top:.8rem">
+            <div class="fgrp" style="margin-bottom:0"><label>Minimum Words</label><input id="pT-minw" class="finp" type="number" min="150" max="600" step="10" value="150"></div>
+            <div class="fgrp" style="margin-bottom:0"><label>Maximum Words <span style="color:var(--t3)">(default 220)</span></label><input id="pT-maxw" class="finp" type="number" min="150" max="900" step="10" value="220"></div>
+          </div>
+          <div class="fgrp" style="margin-top:.8rem;margin-bottom:0"><label>Language / Style follow your saved profile</label><div class="qbox">Generate a paragraph from the topic, then create comprehension questions in the selected learner language and teaching mode.</div></div>
+          <div id="pT-topic-out" class="fgrp" style="margin-top:.8rem;display:none">
+            <label>Generated Paragraph</label>
+            <textarea id="pT-topic-pass" class="ftxt" readonly style="min-height:140px;background:var(--bg3)" placeholder="Your generated paragraph will appear here…"></textarea>
+            <div class="wc" id="pT-topic-wc">0 words</div>
+          </div>
+          <div class="ar" style="margin-top:0.9rem"><button class="btn bl" onclick="genPrqFromTopic('T')">🪄 Generate Paragraph + Questions</button></div>
+        </div>
+
+        <div id="prq-review-T" class="card" style="display:none">
+          <div class="ctitle">Paste Paragraph + Questions</div>
+          <div class="fgrp"><label>Paragraph to Evaluate</label><textarea id="pT-review-pass" class="ftxt" placeholder="Paste paragraph to evaluate…" oninput="wcnt('pT-review-pass','pT-review-pass-wc')"></textarea><div class="wc" id="pT-review-pass-wc">0 words</div></div>
+          <div class="fgrp"><label>Questions</label><textarea id="pT-review-questions" class="ftxt" style="min-height:120px" placeholder="Paste the questions here, one per line or as a block."></textarea></div>
+          <div class="fgrp"><label>Your Answers <span style="color:var(--t3)">(optional, one per line)</span></label><textarea id="pT-review-answers" class="ftxt" style="min-height:110px" placeholder="Paste answers if you want checking, otherwise leave blank for a correct-answer key."></textarea></div>
+          <div class="ar" style="margin-top:.9rem"><button class="btn bl" onclick="reviewPrqPaste('T')">🔎 Evaluate / Show Answers</button></div>
+        </div>
+
+        <div class="ar">
+          <button class="btn bl" onclick="genPrq('T')">📖 Generate Questions</button>
+          <button class="btn bo" onclick="clrPrq('T')">↺ Clear</button>
+        </div>
+
+        <div id="pT-qs" class="res">
+          <div class="card">
+            <div class="ctitle">Generated Questions</div>
+            <div id="pT-qb"></div>
+            <div class="ar" style="margin-top:1rem"><button class="btn bl" onclick="submitPrq('T')">✅ Submit Answers</button></div>
+          </div>
+        </div>
+
+        <div id="pT-res" class="res"><div class="card"><div class="ctitle">PRQ Results</div><div id="pT-rb"></div></div></div>
+      </div>
+
+      <!-- STUDENT PRQ -->
+      <div id="pS" style="display:none">
+        <div class="steps">
+          <div class="step act" id="pS1">1 · Configure</div>
+          <div class="step" id="pS2">2 · Answer</div>
+          <div class="step" id="pS3">3 · Results</div>
+        </div>
+        <div class="ph">
+          <div style="display:flex;justify-content:flex-start;margin-bottom:.55rem"><button class="back" style="padding:.32rem .7rem" onclick="show('s-feat')">← Back</button></div>
+          <div class="eye">PARAGRAPH READING — STUDENT</div>
+          <h2>Practice Paragraph Reading</h2>
+          <p>Use any paragraph to practice comprehension with instant feedback on literal, inferential, and vocabulary questions.</p>
+        </div>
+
+        <div class="pmodes">
+          <button id="pS-mode-generate" class="btn bg" onclick="setPrqMode('S','generate')">Paragraph → Questions</button>
+          <button id="pS-mode-topic" class="btn bo" onclick="setPrqMode('S','topic')">Topic → Paragraph + Questions</button>
+          <button id="pS-mode-review" class="btn bo" onclick="setPrqMode('S','review')">Paste & Evaluate</button>
+          <button id="pS-mode-custom" class="btn bo" onclick="setPrqMode('S','custom')">Custom Paragraph Reading</button>
+        </div>
+
+        <div id="prq-custom-S" class="card" style="display:none">
+          <div class="ctitle">Custom Paragraph Reading Controls</div>
+          <div class="g2">
+            <div class="fgrp" style="margin-bottom:0"><label>Paragraph</label><select id="pS-own-par" class="fsel" onchange="setPrqOwnership('S','paragraph',this.value)"><option value="agent">Agent</option><option value="myself">Myself</option></select></div>
+            <div class="fgrp" style="margin-bottom:0"><label>Question</label><select id="pS-own-que" class="fsel" onchange="setPrqOwnership('S','question',this.value)"><option value="agent">Agent</option><option value="myself">Myself</option></select></div>
+            <div class="fgrp" style="margin-bottom:0"><label>Answer</label><select id="pS-own-ans" class="fsel" onchange="setPrqOwnership('S','answer',this.value)"><option value="agent">Agent</option><option value="myself">Myself</option></select></div>
+            <div class="fgrp" style="margin-bottom:0"><label>Evaluation</label><div class="qbox" style="min-height:auto">Agent evaluation is always enabled for Custom Paragraph Reading.</div></div>
+          </div>
+          <div class="qbox" style="margin-top:.8rem">Choose who provides the paragraph, who creates the questions, and who supplies the answers. The app will show the matching input panels automatically.</div>
+        </div>
+
+        <div id="prq-generate-S" class="card">
+          <div class="ctitle">Configuration</div>
+          <div class="g2">
+            <div class="fgrp"><label>Your Name</label><input id="pS-nm" class="finp" placeholder="Auto from profile" readonly></div>
+            <div class="fgrp"><label>Difficulty</label><select id="pS-diff" class="fsel"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select></div>
+            <div class="fgrp"><label>Class / Grade</label><select id="pS-cls" class="fsel" disabled><option value="">Select Class</option><option value="1">Class 1</option><option value="2">Class 2</option><option value="3">Class 3</option><option value="4">Class 4</option><option value="5">Class 5</option><option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option><option value="12">Class 12</option></select></div>
+            <div class="fgrp"><label>Curriculum / Board</label><select id="pS-board" class="fsel" disabled><option value="">Select Board</option><option value="CBSE">CBSE</option><option value="ICSE">ICSE</option><option value="State Board">State Board</option><option value="IB">IB</option><option value="IGCSE">IGCSE</option><option value="Other">Other</option></select></div>
+          </div>
+          <div class="fgrp" style="margin-top:.8rem;margin-bottom:0">
+            <label>Number of Questions</label>
+            <div class="stepr"><button class="nbt" onclick="adjPrq('S',-1)">−</button><span class="nv" id="pS-cnt">5</span><button class="nbt" onclick="adjPrq('S',1)">+</button></div>
+          </div>
+        </div>
+
+        <div id="prq-pass-S" class="card">
+          <div class="ctitle">Paste Paragraph for Questions</div>
+          <textarea id="pS-pass" class="ftxt" placeholder="Paste paragraph here (minimum 50 words)…" oninput="wcnt('pS-pass','pS-wc')"></textarea>
+          <div class="wc" id="pS-wc">0 words</div>
+        </div>
+
+        <div id="prq-topic-S" class="card" style="display:none">
+          <div class="ctitle">Topic Only</div>
+          <div class="g2">
+            <div class="fgrp"><label>Topic / Question</label><input id="pS-topic" class="finp" placeholder="e.g. Pollution and public health"></div>
+            <div class="fgrp"><label>Question Count</label><div class="stepr"><button class="nbt" onclick="adjPrq('S',-1)">−</button><span class="nv" id="pS-topic-cnt">5</span><button class="nbt" onclick="adjPrq('S',1)">+</button></div></div>
+          </div>
+          <div class="g2" style="margin-top:.8rem">
+            <div class="fgrp" style="margin-bottom:0"><label>Minimum Words</label><input id="pS-minw" class="finp" type="number" min="150" max="600" step="10" value="150"></div>
+            <div class="fgrp" style="margin-bottom:0"><label>Maximum Words <span style="color:var(--t3)">(default 220)</span></label><input id="pS-maxw" class="finp" type="number" min="150" max="900" step="10" value="220"></div>
+          </div>
+          <div class="fgrp" style="margin-top:.8rem;margin-bottom:0"><label>Language / Style follow your saved profile</label><div class="qbox">Generate a paragraph from the topic, then create comprehension questions in the selected learner language and teaching mode.</div></div>
+          <div id="pS-topic-out" class="fgrp" style="margin-top:.8rem;display:none">
+            <label>Generated Paragraph</label>
+            <textarea id="pS-topic-pass" class="ftxt" readonly style="min-height:140px;background:var(--bg3)" placeholder="Your generated paragraph will appear here…"></textarea>
+            <div class="wc" id="pS-topic-wc">0 words</div>
+          </div>
+          <div class="ar" style="margin-top:0.9rem"><button class="btn bg" onclick="genPrqFromTopic('S')">🪄 Generate Paragraph + Questions</button></div>
+        </div>
+
+        <div id="prq-review-S" class="card" style="display:none">
+          <div class="ctitle">Paste Paragraph + Questions</div>
+          <div class="fgrp"><label>Paragraph to Evaluate</label><textarea id="pS-review-pass" class="ftxt" placeholder="Paste paragraph to evaluate…" oninput="wcnt('pS-review-pass','pS-review-pass-wc')"></textarea><div class="wc" id="pS-review-pass-wc">0 words</div></div>
+          <div class="fgrp"><label>Questions</label><textarea id="pS-review-questions" class="ftxt" style="min-height:120px" placeholder="Paste the questions here, one per line or as a block."></textarea></div>
+          <div class="fgrp"><label>Your Answers <span style="color:var(--t3)">(optional, one per line)</span></label><textarea id="pS-review-answers" class="ftxt" style="min-height:110px" placeholder="Paste answers if you want checking, otherwise leave blank for a correct-answer key."></textarea></div>
+          <div class="ar" style="margin-top:.9rem"><button class="btn bg" onclick="reviewPrqPaste('S')">🔎 Evaluate / Show Answers</button></div>
+        </div>
+
+        <div class="ar">
+          <button class="btn bg" onclick="genPrq('S')">📖 Generate Questions</button>
+          <button class="btn bo" onclick="clrPrq('S')">↺ Clear</button>
+        </div>
+
+        <div id="pS-qs" class="res">
+          <div class="card">
+            <div class="ctitle">Generated Questions</div>
+            <div id="pS-qb"></div>
+            <div class="ar" style="margin-top:1rem"><button class="btn bg" onclick="submitPrq('S')">✅ Submit Answers</button></div>
+          </div>
+        </div>
+
+        <div id="pS-res" class="res"><div class="card"><div class="ctitle">PRQ Results</div><div id="pS-rb"></div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="ov"><div class="spinb"><div class="spin"></div><p id="spmsg">Processing…</p><div class="prog-wrap"><div id="prog-fill" class="prog-fill"></div></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="./config.js"></script>
+<script>
+// ═══════════════ CONFIG ═══════════════
+const APP_CONFIG=(window.APP_CONFIG||{});
+const API_BASE=(localStorage.getItem('AGENIX_API_BASE')||APP_CONFIG.API_BASE||'http://localhost:8080/api').trim();
+const EA=API_BASE+'/essay';
+const QA=API_BASE+'/quiz';
+const PA=API_BASE+'/prq';
+
+const THEME_DEFAULT=(APP_CONFIG.THEME_DEFAULT||'dark').toLowerCase()==='light'?'light':'dark';
+const savedTheme=(localStorage.getItem('AGENIX_THEME')||THEME_DEFAULT);
+if(savedTheme==='light') document.body.classList.add('light-mode');
+
+let PROG_TIMER=null;
+let PROG_VALUE=10;
+
+if(window.location.protocol==='file:'){
+  setTimeout(()=>toast('Tip: run docker compose up --build to use the unified gateway and all APIs.','info'),700);
+}
+
+// ═══════════════ STATE ════════════════
+const S={
+  role:'teacher',mode:'evaluate',feat:'essay',
+  studentProfile:{
+    student_id:'',candidate_name:'',student_class:'',curriculum:'',subject:'',language:'',teaching_mode:'',
+    learning_style_preference:'',
+    skill_level_per_subject:'',goal:'',weak_areas:'',explanation_style:'',
+    attention_span_preference:'10-20 min',primary_struggle_area:'Understanding concepts',
+    avg_study_time_minutes_per_day:null,preferred_difficulty_level:'',
+    learning_pace:'average',question_style_preference:'multiple-choice only',time_limit_per_question_seconds:null,
+    feedback_detail_level:'detailed',confidence_per_topic:{},preferred_examples_domain:'daily life',gamification_preference:'yes',
+    study_time_morning_hours:null,study_time_afternoon_hours:null,study_time_evening_hours:null,study_time_night_hours:null,
+    class_roster_csv_text:'',assignment_deadlines:[],custom_rubric_weights:{},minimum_passing_thresholds:{},
+    export_formats:['CSV'],plagiarism_check_enabled:false,
+    performance_history:[],performance_avg_score:0,performance_sessions:0
+  },
+  params:new Set(),
+  qdata:{T:null,S:null},
+  qcnt:{T:5,S:5},
+  prqCnt:{T:5,S:5},
+  prqMode:{T:'generate',S:'generate'},
+  prqOwnership:{
+    T:{paragraph:'agent',question:'agent',answer:'myself'},
+    S:{paragraph:'agent',question:'agent',answer:'myself'}
+  },
+  tags:{T:[],S:[]},
+  scats:{T:[],S:[]},
+  prqData:{T:null,S:null},
+  stimer:{T:null,S:null},
+  essaySessionHistory:{T:[],S:[]},
+  essaySessionFinished:{T:false,S:false},
+  essayFlowStage:{T:'idle',S:'idle'},
+  essaySampleText:{T:'',S:''},
+  quizFlow:{
+    T:{index:0,answers:[],timerLeft:0,timeLimit:0,timerId:null},
+    S:{index:0,answers:[],timerLeft:0,timeLimit:0,timerId:null}
+  },
+  quizSessionHistory:{T:[],S:[]},
+  quizSessionFinished:{T:false,S:false},
+  prqSessionHistory:{T:[],S:[]},
+  prqSessionFinished:{T:false,S:false}
+};
+
+const PARAMS=[
+  'language','analysis','thought','structure','relevance','creativity','argumentation',
+  'coherence','grammar','vocabulary','depth','originality','clarity','logic'
+];
+const PRESET=['grammar','clarity','structure','coherence','vocabulary'];
+
+// ═══════════════ SCREENS ══════════════
+function show(id){document.querySelectorAll('.scr').forEach(x=>x.classList.remove('on'));document.getElementById(id).classList.add('on');if(id!=='s-prof') document.body.classList.remove('progress-only');}
+
+function resetFeatureSelection(){
+  const b=document.getElementById('f-badge');
+  b.textContent=S.role==='teacher'?'🎓 Teacher':'📚 Student';
+  b.className='rbdg '+(S.role==='teacher'?'rbt':'rbs');
+  const hint=document.getElementById('feat-hint');
+  if(hint){
+    hint.textContent=S.role==='student'
+      ? 'Please select a feature below to continue your learning journey.'
+      : 'Select what you would like to work on today.';
+  }
+  document.getElementById('fdrop').value='';
+  document.getElementById('fopts').style.display='none';
+  document.getElementById('bgo').disabled=true;
+  S.feat='';
+  refreshCoachGreeting();
+}
+
+function getTimeGreeting(){
+  const h=new Date().getHours();
+  if(h<12) return 'Good morning';
+  if(h<17) return 'Good afternoon';
+  if(h<21) return 'Good evening';
+  return 'Hello';
+}
+
+function getFeatureLabel(){
+  const map={essay:'Essay',quiz:'Quiz',prq:'Paragraph Reading'};
+  return map[S.feat]||'your session';
+}
+
+function escapeHtml(text){
+  return String(text||'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+function getModeLabel(){
+  const map={evaluate:'evaluation',generate:'practice'};
+  return map[S.mode]||'learning';
+}
+
+function getTeachingModeGuide(){
+  const mode=(S.studentProfile.teaching_mode||'').trim();
+  const guides={
+    'Pictorial / visual':'I’ll keep the guidance visual, simple, and example-led when needed.',
+    'Step-by-step':'I’ll break tasks into small steps when needed.',
+    'Example-based':'I’ll add examples and relatable situations when needed.',
+    'Story-based':'I’ll frame explanations like a short story when needed.',
+    'Simple language':'I’ll keep the language short and easy when needed.',
+    'Activity-based':'I’ll make the task feel interactive and hands-on when needed.',
+    'Practice-focused':'I’ll emphasize practice and repetition when needed.',
+    'Bilingual hints':'I’ll give light bilingual hints when needed.'
+  };
+  return mode ? guides[mode] || `I’ll adapt to your selected learning mode (${mode}) when needed.` : '';
+}
+
+function isChildLearner(){
+  const raw=(S.studentProfile.student_class||'').trim();
+  const n=parseInt(raw,10);
+  return Number.isFinite(n) && n>0 && n<5;
+}
+
+function getChildStyleGuide(){
+  return isChildLearner() ? 'I’ll keep it playful, short, and colorful with tiny steps and fun surprises.' : '';
+}
+
+function setStudentProfile(profile){
+  const p=profile||{};
+  const parsedStudyMinutes = p.avg_study_time_minutes_per_day===null || p.avg_study_time_minutes_per_day===undefined || p.avg_study_time_minutes_per_day===''
+    ? null
+    : Number(p.avg_study_time_minutes_per_day);
+  const perfHistory = Array.isArray(p.performance_history) ? p.performance_history : [];
+  const confidencePerTopic = (p.confidence_per_topic && typeof p.confidence_per_topic==='object' && !Array.isArray(p.confidence_per_topic)) ? p.confidence_per_topic : {};
+  const assignmentDeadlines = Array.isArray(p.assignment_deadlines) ? p.assignment_deadlines : [];
+  const customRubric = (p.custom_rubric_weights && typeof p.custom_rubric_weights==='object' && !Array.isArray(p.custom_rubric_weights)) ? p.custom_rubric_weights : {};
+  const minThresholds = (p.minimum_passing_thresholds && typeof p.minimum_passing_thresholds==='object' && !Array.isArray(p.minimum_passing_thresholds)) ? p.minimum_passing_thresholds : {};
+  const exportFormats = Array.isArray(p.export_formats) ? p.export_formats : [];
+  S.studentProfile={
+    student_id:String(p.student_id||'').trim(),
+    candidate_name:String(p.candidate_name||'').trim(),
+    student_class:String(p.student_class||'').trim(),
+    curriculum:String(p.curriculum||'').trim(),
+    subject:String(p.subject||'').trim(),
+    language:String(p.language||'').trim(),
+    teaching_mode:String(p.teaching_mode||'').trim(),
+    learning_style_preference:String(p.learning_style_preference||'').trim().toLowerCase(),
+    skill_level_per_subject:String(p.skill_level_per_subject||'').trim(),
+    goal:String(p.goal||'').trim(),
+    weak_areas:String(p.weak_areas||'').trim(),
+    explanation_style:String(p.explanation_style||'').trim(),
+    attention_span_preference:String(p.attention_span_preference||'10-20 min').trim(),
+    primary_struggle_area:String(p.primary_struggle_area||'Understanding concepts').trim(),
+    avg_study_time_minutes_per_day:Number.isFinite(parsedStudyMinutes)?parsedStudyMinutes:null,
+    study_time_morning_hours:(p.study_time_morning_hours==null||p.study_time_morning_hours==='')?null:Number(p.study_time_morning_hours),
+    study_time_afternoon_hours:(p.study_time_afternoon_hours==null||p.study_time_afternoon_hours==='')?null:Number(p.study_time_afternoon_hours),
+    study_time_evening_hours:(p.study_time_evening_hours==null||p.study_time_evening_hours==='')?null:Number(p.study_time_evening_hours),
+    study_time_night_hours:(p.study_time_night_hours==null||p.study_time_night_hours==='')?null:Number(p.study_time_night_hours),
+    preferred_difficulty_level:String(p.preferred_difficulty_level||'').trim(),
+    learning_pace:String(p.learning_pace||'average').trim().toLowerCase(),
+    question_style_preference:String(p.question_style_preference||'multiple-choice only').trim().toLowerCase(),
+    time_limit_per_question_seconds:(p.time_limit_per_question_seconds==null||p.time_limit_per_question_seconds==='')?null:Number(p.time_limit_per_question_seconds),
+    feedback_detail_level:String(p.feedback_detail_level||'detailed').trim().toLowerCase(),
+    confidence_per_topic:confidencePerTopic,
+    preferred_examples_domain:String(p.preferred_examples_domain||'daily life').trim().toLowerCase(),
+    gamification_preference:String(p.gamification_preference||'yes').trim().toLowerCase(),
+    class_roster_csv_text:String(p.class_roster_csv_text||'').trim(),
+    assignment_deadlines:assignmentDeadlines,
+    custom_rubric_weights:customRubric,
+    minimum_passing_thresholds:minThresholds,
+    export_formats:exportFormats,
+    plagiarism_check_enabled:Boolean(p.plagiarism_check_enabled),
+    performance_history:perfHistory,
+    performance_avg_score:Number(p.performance_avg_score||0),
+    performance_sessions:Number(p.performance_sessions||0),
+  };
+  syncStudentProfileToUI();
+}
+
+function syncStudentProfileToUI(){
+  const p=S.studentProfile;
+  const setVal=(id,val)=>{const el=document.getElementById(id);if(el)el.value=val||'';};
+  setVal('sp-existing-id',p.student_id);
+  ['eS-nm','qS-nm','pS-nm','sp-nm'].forEach(id=>setVal(id,p.candidate_name));
+  ['eS-cls','qS-cls','pS-cls','sp-cls'].forEach(id=>setVal(id,p.student_class));
+  ['eS-board','qS-board','pS-board','sp-board'].forEach(id=>setVal(id,p.curriculum));
+  ['sp-subject'].forEach(id=>setVal(id,p.subject));
+  ['sp-lang','qS-lang'].forEach(id=>setVal(id,p.language));
+  ['sp-explain-style'].forEach(id=>setVal(id,p.explanation_style));
+  ['sp-self-level'].forEach(id=>setVal(id,p.skill_level_per_subject));
+  ['sp-gamified'].forEach(id=>setVal(id,p.gamification_preference));
+  ['sp-attention-span'].forEach(id=>setVal(id,p.attention_span_preference));
+  ['sp-struggle-area'].forEach(id=>setVal(id,p.primary_struggle_area||p.weak_areas));
+  ['sp-study-min'].forEach(id=>setVal(id,p.avg_study_time_minutes_per_day==null?'':String(p.avg_study_time_minutes_per_day)));
+  ['sp-study-morning'].forEach(id=>setVal(id,p.study_time_morning_hours==null?'':String(p.study_time_morning_hours)));
+  ['sp-study-afternoon'].forEach(id=>setVal(id,p.study_time_afternoon_hours==null?'':String(p.study_time_afternoon_hours)));
+  ['sp-study-evening'].forEach(id=>setVal(id,p.study_time_evening_hours==null?'':String(p.study_time_evening_hours)));
+  ['sp-study-night'].forEach(id=>setVal(id,p.study_time_night_hours==null?'':String(p.study_time_night_hours)));
+  ['sp-learning-pace'].forEach(id=>setVal(id,p.learning_pace));
+  const studentTimed=Number(p.time_limit_per_question_seconds||0)>0;
+  const qSTimed=document.getElementById('qS-timed');
+  const qSTimeLimit=document.getElementById('qS-time-limit');
+  if(qSTimed) qSTimed.checked=studentTimed;
+  if(qSTimeLimit) qSTimeLimit.value=studentTimed?String(p.time_limit_per_question_seconds||0):'0';
+
+  const idDisplay=document.getElementById('sp-id-display');
+  if(idDisplay){
+    idDisplay.textContent=p.student_id
+      ? ('Your Student ID: '+p.student_id+' (save this to auto-load your data next time).')
+      : 'Student ID will appear here after saving your profile.';
+  }
+  const perfSummary=document.getElementById('sp-perf-summary');
+  if(perfSummary){
+    const sess=Number(p.performance_sessions||0);
+    const avg=Number(p.performance_avg_score||0);
+    perfSummary.textContent=sess>0
+      ? ('Performance history: '+sess+' attempts, average '+avg.toFixed(1)+'%.')
+      : 'Performance history will auto-fill after each Essay, Quiz, and Paragraph Reading attempt.';
+  }
+
+  const ul=document.getElementById('ulbl');
+  if(ul&&S.role==='student') ul.textContent=p.candidate_name?('Student: '+p.candidate_name):'Student';
+  const hint=document.getElementById('feat-hint');
+  if(hint && S.role==='student'){
+    const guide=getTeachingModeGuide();
+    hint.textContent=guide
+      ? `Please select a feature below to continue your learning journey. ${guide}`
+      : 'Please select a feature below to continue your learning journey.';
+  }
+  const ph=document.getElementById('prof-hint');
+  if(ph){
+    const guide=getTeachingModeGuide();
+    ph.textContent=guide
+      ? `We will reuse this profile for Essay, Quiz, and Paragraph Reading. ${guide}`
+      : 'We will reuse this profile for Essay, Quiz, and Paragraph Reading.';
+  }
+  document.body.classList.toggle('kid-mode', isChildLearner());
+  renderTopUserBadge();
+  const kidTip=document.getElementById('kid-profile-tip');
+  if(kidTip){
+    const kidGuide=getChildStyleGuide();
+    if(kidGuide){
+      kidTip.style.display='block';
+      kidTip.innerHTML='<div class="kid-title">🎠 Kid Mode <span class="kid-reward">⭐ Playground on</span></div><p>'+kidGuide+' Tap Continue and I will add toy-like help, stickers, and quick cheer-ups.</p>';
+    }else{
+      kidTip.style.display='none';
+    }
+  }
+}
+
+function refreshCoachGreeting(){
+  const tm=getTimeGreeting();
+  const guide=getTeachingModeGuide();
+  const kidGuide=getChildStyleGuide();
+  const feature=getFeatureLabel();
+  const modeLabel=getModeLabel();
+
+  const featBox=document.getElementById('feat-greet');
+  if(featBox){
+    featBox.style.display='block';
+    if(S.feat){
+      featBox.textContent=`${tm}! You selected ${feature}. Pick a mode and I will tailor the flow for ${modeLabel}.`;
+    }else{
+      featBox.textContent=S.role==='student'
+        ? `${tm}! Choose a feature and I will guide you with short, clear steps.`
+        : `${tm}! Choose a feature to begin evaluation or content generation.`;
+    }
+  }
+
+  const profBox=document.getElementById('prof-greet');
+  if(profBox){
+    profBox.style.display='block';
+    profBox.textContent=guide
+      ? `${tm}! Share your profile once and I will personalize each task. ${guide}`
+      : `${tm}! Share your profile once and I will personalize each task.`;
+    if(kidGuide && S.role==='student') profBox.textContent += ' ' + kidGuide;
+  }
+
+  const box=document.getElementById('coach-greet');
+  const follow=document.getElementById('coach-followup');
+  const actions=document.getElementById('coach-actions');
+  if(!box) return;
+  if(actions) actions.style.display='flex';
+  if(S.role==='student'){
+    box.style.display='block';
+    box.textContent=guide
+      ? `${tm}! You are in ${feature}. I will guide you step by step for ${modeLabel}. ${guide}`
+      : `${tm}! You are in ${feature}. I will guide you step by step for ${modeLabel}.`;
+    if(kidGuide) box.textContent += ' ' + kidGuide;
+    if(follow){
+      follow.style.display='block';
+      follow.innerHTML='<p>Quick interaction: use the buttons below for warm-up tips, motivation, or a focused next step.</p>';
+    }
+  }else{
+    box.style.display='block';
+    box.textContent=guide
+      ? `${tm}! Teacher workspace is ready for ${feature}. Use the quick actions to get coaching prompts. ${guide}`
+      : `${tm}! Teacher workspace is ready for ${feature}. Use the quick actions to get coaching prompts.`;
+    if(follow){
+      follow.style.display='block';
+      follow.innerHTML='<p>Quick interaction: ask for a warm-up tip before class, a next-step suggestion, or a motivation line for learners.</p>';
+    }
+  }
+
+}
+
+function coachNudge(type){
+  const follow=document.getElementById('coach-followup');
+  if(!follow) return;
+  const feature=getFeatureLabel();
+  const modeLabel=getModeLabel();
+  const guide=getTeachingModeGuide();
+
+  const hints={
+    warmup:[
+      `Start with a 60-second warm-up: ask one quick question about ${feature} before the main task.`,
+      `Quick warm-up: let the learner predict one idea they expect in this ${feature} task.`,
+      `Warm-up cue: ask for one example from real life related to this ${feature} activity.`
+    ],
+    next:[
+      `Next step: complete one focused ${modeLabel} task, then review one strength and one improvement point.`,
+      `Next step: finish the current ${feature} item first, then generate one follow-up task at the same level.`,
+      `Next step: attempt, review feedback, and retry once for better retention.`
+    ],
+    motivate:[
+      'Progress beats perfection. One clear attempt right now is enough to move forward.',
+      'You are building skill with each response. Keep your next attempt focused and simple.',
+      'Consistency wins: one good step now makes the next one easier.'
+    ]
+  };
+
+  const list=hints[type]||hints.next;
+  const msg=list[Math.floor(Math.random()*list.length)];
+  follow.style.display='block';
+  follow.innerHTML='<p>'+msg+(guide?(' '+guide):'')+'</p>';
+}
+
+function setEssayFlow(r, stage){
+  S.essayFlowStage[r]=stage;
+  const flow=document.getElementById(`e${r}-flow`);
+  const sampleWrap=document.getElementById(`e${r}-sample-wrap`);
+  const repeatWrap=document.getElementById(`e${r}-repeat-wrap`);
+  if(!flow) return;
+
+  if(stage==='samplePrompt'){
+    flow.innerHTML='Need a sample essay that scores highly on the selected parameters?';
+    if(sampleWrap) sampleWrap.style.display='none';
+    if(repeatWrap) repeatWrap.style.display='none';
+  }else if(stage==='sampleShown'){
+    flow.innerHTML='Do you want to evaluate another essay?';
+    if(sampleWrap) sampleWrap.style.display='block';
+    if(repeatWrap) repeatWrap.style.display='block';
+  }else if(stage==='finished'){
+    flow.innerHTML='Session finished. Your report and certificate are being generated if eligible.';
+    if(sampleWrap) sampleWrap.styl.display='none';
+    if(repeatWrap) repeatWrap.style.display='none';
+  }else{
+    flow.innerHTML='Need a sample essay that scores highly on the selected parameters?';
+    if(sampleWrap) sampleWrap.style.display='none';
+    if(repeatWrap) repeatWrap.style.display='none';
+  }
+}
+
+function getEssaySessionHistory(r){
+  return S.essaySessionHistory[r] || [];
+}
+
+function storeEssayRun(r, result, essay, params, name){
+  if(!S.essaySessionHistory[r]) S.essaySessionHistory[r]=[];
+  const profile=getStudentProfile('e',r);
+  S.essaySessionHistory[r].push({
+    candidate_name:name,
+    essay_question:'',
+    essay_topic:result.essay_topic || '',
+    essay,
+    scores:result.scores || {},
+    feedbacks:result.feedbacks || {},
+    avg_score:result.avg_score || 0,
+    overall_feedback:result.overall_feedback || '',
+    timestamp:Date.now()/1000,
+    student_class:profile.student_class,
+    curriculum:profile.curriculum,
+    parameters:params
+  });
+  S.essaySessionFinished[r]=false;
+}
+
+function renderEssaySessionControls(r){
+  const flow=document.getElementById(`e${r}-flow`);
+  const sampleWrap=document.getElementById(`e${r}-sample-wrap`);
+  const repeatWrap=document.getElementById(`e${r}-repeat-wrap`);
+  if(!flow) return;
+  const stage=S.essayFlowStage[r]||'samplePrompt';
+  if(stage==='sampleShown'){
+    flow.innerHTML='Do you want to evaluate another essay?';
+    if(sampleWrap) sampleWrap.style.display='block';
+    if(repeatWrap) repeatWrap.style.display='block';
+  }else if(stage==='finished'){
+    flow.innerHTML='Session finished. Your report and certificate are being generated if eligible.';
+    if(sampleWrap) sampleWrap.style.display='none';
+    if(repeatWrap) repeatWrap.style.display='none';
+  }else{
+    flow.innerHTML='Need a sample essay that scores highly on the selected parameters?';
+    if(sampleWrap) sampleWrap.style.display='none';
+    if(repeatWrap) repeatWrap.style.display='none';
+  }
+}
+
+function setFieldValue(id, value, focus=true){
+  const el=document.getElementById(id);
+  if(!el) return false;
+  el.value=value;
+  el.dispatchEvent(new Event('input', {bubbles:true}));
+  if(focus) el.focus();
+  return true;
+}
+
+function getKidTargets(){
+  const role=S.role==='student'?'S':'T';
+  const feat=S.feat||'prq';
+  return {role, feat};
+}
+
+function kidPlay(type){
+  if(!isChildLearner()) return;
+  const follow=document.getElementById('coach-followup');
+  const reward=document.getElementById('kid-reward');
+  if(reward){
+    const current=parseInt((reward.textContent.match(/\d+/)||['0'])[0],10);
+    reward.textContent='⭐ '+(current+1)+' sticker'+(current===0?'':'s');
+    const box=reward.closest('.kid-box');
+    if(box){
+      box.classList.add('kid-pop');
+      setTimeout(()=>box.classList.remove('kid-pop'),500);
+    }
+  }
+  const kidMessages={
+    spark:'🌟 Surprise: I filled in a fun starter so you can begin right away.',
+    cheer:'🎈 Cheer: I made the next step easier so you can keep going smoothly.',
+    hint:'🪄 Tiny Hint: I set a simple learning cue to help you stay on track.'
+  };
+
+  const {role, feat}=getKidTargets();
+  const easyTopic='My favourite toy';
+  const easyParagraph='The sun was bright in the park. Children played, laughed, and shared toys. A small dog ran after a ball, and everyone smiled. It was a happy afternoon full of simple fun and kind actions.';
+
+  if(feat==='essay'){
+    if(type==='spark'){
+      if(!setFieldValue(`${role==='S'?'eS':'eT'}-tp`, easyTopic, true)){}
+      const essayBox=document.getElementById(`${role==='S'?'eS':'eT'}-ess`);
+      if(essayBox && !essayBox.value.trim()) essayBox.placeholder='Start with: I think '+easyTopic.toLowerCase()+' is special because...';
+      follow && (follow.innerHTML='<p>Try this topic: <b>'+easyTopic+'</b>. Write 2-3 simple reasons to explain it.</p>');
+    }else if(type==='cheer'){
+      const essayBox=document.getElementById(`${role==='S'?'eS':'eT'}-ess`);
+      if(essayBox){
+        if(!essayBox.value.trim()) essayBox.value='I think '+easyTopic.toLowerCase()+' is special because it makes people happy.';
+        essayBox.focus();
+        essayBox.dispatchEvent(new Event('input', {bubbles:true}));
+      }
+      follow && (follow.innerHTML='<p>Start with one short sentence. Then add one reason and one example.</p>');
+    }else{
+      setFieldValue(`${role==='S'?'eS':'eT'}-tp`, 'A happy day at school', true);
+      follow && (follow.innerHTML='<p>Write a short essay about a happy day at school.</p>');
+    }
+  }else if(feat==='quiz'){
+    if(type==='spark'){
+      setFieldValue(`${role==='S'?'qS':'qT'}-tp`, 'Animals and homes', true);
+      follow && (follow.innerHTML='<p>Use <b>Animals and homes</b> as your quiz topic. Then add 1-2 fun focus words below.</p>');
+    }else if(type==='cheer'){
+      const diff=document.getElementById(`${role==='S'?'qS':'qT'}-diff`);
+      if(diff){ diff.value='easy'; diff.focus(); }
+      follow && (follow.innerHTML='<p>I set the quiz to <b>Easy</b> so you can warm up gently.</p>');
+    }else{
+      const cntEl=document.getElementById(`${role==='S'?'qS':'qT'}-cnt`);
+      if(cntEl) cntEl.textContent='3';
+      if(S.qcnt) S.qcnt[role]='3';
+      setFieldValue(`${role==='S'?'qS':'qT'}-ti`, 'easy words', true);
+      follow && (follow.innerHTML='<p>Add a focus word like <b>easy words</b> and answer just 3 questions first.</p>');
+    }
+  }else if(feat==='prq'){
+    const prqMode=(S.prqMode&&S.prqMode[role])||'generate';
+    const prefix=role==='S'?'pS':'pT';
+    if(type==='spark'){
+      if(prqMode==='topic'){
+        setFieldValue(`${prefix}-topic`, 'A day at the park', true);
+        follow && (follow.innerHTML='<p>Try a fun topic: <b>A day at the park</b>. Then generate the paragraph.</p>');
+      }else if(prqMode==='review'){
+        const box=document.getElementById(`${prefix}-review-pass`);
+        if(box && !box.value.trim()) box.value=easyParagraph;
+        if(box) { box.focus(); box.dispatchEvent(new Event('input', {bubbles:true})); }
+        follow && (follow.innerHTML='<p>Paste the paragraph here, then add the questions below.</p>');
+      }else{
+        const box=document.getElementById(`${prefix}-pass`);
+        if(box && !box.value.trim()) box.value=easyParagraph;
+        if(box){ box.focus(); box.dispatchEvent(new Event('input', {bubbles:true})); }
+        follow && (follow.innerHTML='<p>I added a simple practice paragraph. Now generate questions from it.</p>');
+      }
+    }else if(type==='cheer'){
+      if(prqMode==='topic'){
+        setFieldValue(`${prefix}-topic`, 'My school playground', true);
+        follow && (follow.innerHTML='<p>Use <b>My school playground</b> as the topic. It is easy to imagine and describe.</p>');
+      }else if(prqMode==='review'){
+        const qBox=document.getElementById(`${prefix}-review-questions`);
+        if(qBox) qBox.focus();
+        follow && (follow.innerHTML='<p>After the paragraph, write one question per line.</p>');
+      }else{
+        const box=document.getElementById(`${prefix}-pass`);
+        if(box && !box.value.trim()) box.value=easyParagraph;
+        if(box) box.focus();
+        follow && (follow.innerHTML='<p>Read the paragraph slowly and look for the main idea.</p>');
+      }
+    }else{
+      if(prqMode==='topic'){
+        const minw=document.getElementById(`${prefix}-minw`);
+        const maxw=document.getElementById(`${prefix}-maxw`);
+        if(minw) minw.value='150';
+        if(maxw) maxw.value='220';
+        follow && (follow.innerHTML='<p>I set a friendly word range for the paragraph. Now choose a topic.</p>');
+      }else{
+        const box=document.getElementById(`${prefix}-pass`);
+        if(box) box.focus();
+        follow && (follow.innerHTML='<p>Start by pasting a short paragraph or use the sample I provided.</p>');
+      }
+    }
+  }
+
+  if(follow){
+    follow.style.display='block';
+    if(!follow.innerHTML || !follow.innerHTML.trim()) follow.innerHTML='<p>'+ (kidMessages[type]||kidMessages.hint) +'</p>';
+  }
+  refreshCoachGreeting();
+}
+
+async function loadStudentProfileFromDB(){
+  const savedStudentId=(localStorage.getItem('AGENIX_STUDENT_ID')||'').trim();
+  if(!savedStudentId) return false;
+  try{
+    const r=await fetch(EA+'/student-profile/'+encodeURIComponent(savedStudentId));
+    if(!r.ok)return false;
+    const data=await r.json();
+    if(data&&data.found&&data.profile){
+      setStudentProfile(data.profile);
+      if(data.profile.student_id){
+        localStorage.setItem('AGENIX_STUDENT_ID',data.profile.student_id);
+      }
+      return true;
+    }
+  }catch(_){ }
+  return false;
+}
+
+async function fetchStudentProfileById(){
+  const studentId=(document.getElementById('sp-existing-id').value||document.getElementById('sp-progress-id').value||'').trim();
+  if(!studentId){toast('Enter a Student ID to fetch profile','err');return;}
+  await fetchStudentProgressById(studentId, {fromProfileFetch:true});
+}
+
+async function openStudentProfileScreen(opts={}){
+  if(!S.studentProfile.student_id && !S.studentProfile.candidate_name){
+    await loadStudentProfileFromDB();
+  }
+  show('s-prof');
+  document.body.classList.toggle('progress-only', !!(opts&&opts.progressOnly));
+  syncStudentProfileToUI();
+  const lookupProgress=!!(opts&&opts.lookupProgress);
+  const progressShell=document.querySelector('.progress-shell');
+  if(progressShell){
+    progressShell.style.display=lookupProgress?'grid':'none';
+  }
+  if(opts&&opts.focusName){
+    setTimeout(()=>{
+      const nameInput=document.getElementById('sp-nm');
+      if(nameInput) nameInput.focus();
+    },0);
+  }
+  refreshCoachGreeting();
+}
+
+function editStudentDetails(){
+  if(S.role!=='student'){
+    toast('Switch to student mode to edit student details.','info');
+    return;
+  }
+  openStudentProfileScreen({focusName:true});
+}
+
+function getCandidateHistory(){
+  try{
+    const raw=localStorage.getItem('AGENIX_CANDIDATE_HISTORY');
+    const parsed=raw?JSON.parse(raw):[];
+    return Array.isArray(parsed)?parsed:[];
+  }catch(_){
+    return [];
+  }
+}
+
+function saveCandidateHistory(entries){
+  try{
+    localStorage.setItem('AGENIX_CANDIDATE_HISTORY', JSON.stringify(entries.slice(0,300)));
+  }catch(_){ }
+}
+
+function pushCandidateHistory(entry){
+  const items=getCandidateHistory();
+  items.unshift({
+    role:String(entry&&entry.role||'student').toLowerCase(),
+    mode:String(entry&&entry.mode||'generate').toLowerCase(),
+    name:String(entry&&entry.name||'').trim(),
+    student_id:String(entry&&entry.student_id||'').trim(),
+    student_class:String(entry&&entry.student_class||'').trim(),
+    curriculum:String(entry&&entry.curriculum||'').trim(),
+    language:String(entry&&entry.language||'').trim(),
+    at:Number(entry&&entry.at||Date.now())
+  });
+  saveCandidateHistory(items);
+}
+
+function formatHistoryDate(ts){
+  const v=Number(ts||0);
+  if(!v) return 'Unknown time';
+  try{return new Date(v).toLocaleString();}catch(_){return 'Unknown time';}
+}
+
+async function toggleCandidateDetails(){
+  const modal=document.getElementById('candidate-details-modal');
+  const panel=document.getElementById('candidate-details-panel');
+  if(!panel||!modal) return;
+  if(modal.style.display==='flex'){
+    modal.style.display='none';
+    panel.innerHTML='';
+    return;
+  }
+  if(!S.studentProfile.student_id && !S.studentProfile.candidate_name){
+    await loadStudentProfileFromDB();
+  }
+  const p=S.studentProfile||{};
+  let studentProfiles=[];
+  try{
+    const r=await fetch(EA+'/student-profiles?limit=300');
+    if(r.ok){
+      const data=await r.json();
+      if(Array.isArray(data&&data.profiles)) studentProfiles=data.profiles;
+    }
+  }catch(_){ }
+  if(!studentProfiles.length && (p.student_id||p.candidate_name)) studentProfiles=[p];
+
+  const history=getCandidateHistory();
+  const teacherHistory=history.filter(item=>String(item&&item.role||'').toLowerCase()==='teacher').slice(0,20);
+  const studentHistory=history.filter(item=>String(item&&item.role||'').toLowerCase()==='student').slice(0,20);
+
+  const studentRows=studentProfiles.slice(0,40).map((s)=>{
+    const studyWindow=[
+      ['M', s.study_time_morning_hours],
+      ['A', s.study_time_afternoon_hours],
+      ['E', s.study_time_evening_hours],
+      ['N', s.study_time_night_hours],
+    ].map(([label,val])=>`${label}:${val==null||val===''?'--':val+'h'}`).join(' | ');
+    return `<tr>
+      <td>${s.candidate_name||'Not set'}</td>
+      <td>${s.student_id||'Not set'}</td>
+      <td>${s.student_class||'Not set'}</td>
+      <td>${s.curriculum||'Not set'}</td>
+      <td>${s.language||'Not set'}</td>
+      <td>${s.learning_pace||'Not set'}</td>
+      <td>${s.skill_level_per_subject||'Not set'}</td>
+      <td>${studyWindow}</td>
+    </tr>`;
+  }).join('');
+
+  const teacherRows=teacherHistory.length
+    ? teacherHistory.map((t)=>`<tr><td>${t.name||'Teacher user'}</td><td>${t.mode||'generate'}</td><td>${formatHistoryDate(t.at)}</td></tr>`).join('')
+    : '<tr><td colspan="3">No teacher history found yet.</td></tr>';
+
+  const studentHistoryRows=studentHistory.length
+    ? studentHistory.map((s)=>`<tr><td>${s.name||'Student user'}</td><td>${s.student_id||'Not set'}</td><td>${s.mode||'generate'}</td><td>${formatHistoryDate(s.at)}</td></tr>`).join('')
+    : '<tr><td colspan="4">No local student history found yet.</td></tr>';
+
+  panel.innerHTML=`
+    <div style="display:flex;justify-content:space-between;gap:1rem;align-items:start;flex-wrap:wrap;margin-bottom:.8rem">
+      <div>
+        <div class="ctitle" style="margin-bottom:.2rem">Details of Candidates</div>
+        <div class="wc">Saved students from database + previous student/teacher entries on this browser.</div>
+      </div>
+      <button class="btn bo" style="padding:.45rem .75rem" onclick="toggleCandidateDetails()">Close</button>
+    </div>
+    <div class="qbox" style="margin-bottom:.85rem">
+      <div class="wc" style="margin-bottom:.5rem"><strong>All Student Details (saved users)</strong></div>
+      <div style="overflow-x:auto">
+        <table class="ptbl">
+          <thead><tr><th>Name</th><th>Student ID</th><th>Class</th><th>Board</th><th>Language</th><th>Pace</th><th>Level</th><th>Study Time Slots</th></tr></thead>
+          <tbody>${studentRows||'<tr><td colspan="8">No saved student profiles found.</td></tr>'}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="qbox" style="margin-bottom:0">
+        <div class="wc" style="margin-bottom:.5rem"><strong>Previous Teacher Users</strong></div>
+        <div style="overflow-x:auto">
+          <table class="ptbl">
+            <thead><tr><th>Teacher</th><th>Mode</th><th>Last Seen</th></tr></thead>
+            <tbody>${teacherRows}</tbody>
+          </table>
+        </div>
+      </div>
+      <div class="qbox" style="margin-bottom:0">
+        <div class="wc" style="margin-bottom:.5rem"><strong>Previous Student Users (browser history)</strong></div>
+        <div style="overflow-x:auto">
+          <table class="ptbl">
+            <thead><tr><th>Student</th><th>Student ID</th><th>Mode</th><th>Last Seen</th></tr></thead>
+            <tbody>${studentHistoryRows}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    `;
+  modal.style.display='flex';
+}
+
+async function saveStudentProfileAndContinue(){
+  const student_id=(document.getElementById('sp-existing-id').value||'').trim();
+  const candidate_name=(document.getElementById('sp-nm').value||'').trim();
+  const student_class=(document.getElementById('sp-cls').value||'').trim();
+  const curriculum=(document.getElementById('sp-board').value||'').trim();
+  const subject=(document.getElementById('sp-subject').value||'').trim();
+  const language=(document.getElementById('sp-lang').value||'').trim();
+  const learning_pace=(document.getElementById('sp-learning-pace').value||'').trim().toLowerCase();
+  const explanation_style=(document.getElementById('sp-explain-style').value||'').trim();
+  const teaching_mode=explanation_style||'Step-by-step';
+  const studyMinutesRaw=(document.getElementById('sp-study-min').value||'').trim();
+  const avg_study_time_minutes_per_day=studyMinutesRaw===''?null:Math.max(0,parseInt(studyMinutesRaw,10));
+  const studyMorningRaw=(document.getElementById('sp-study-morning').value||'').trim();
+  const study_time_morning_hours=studyMorningRaw===''?null:Math.max(0,parseFloat(studyMorningRaw));
+  const studyAfternoonRaw=(document.getElementById('sp-study-afternoon').value||'').trim();
+  const study_time_afternoon_hours=studyAfternoonRaw===''?null:Math.max(0,parseFloat(studyAfternoonRaw));
+  const studyEveningRaw=(document.getElementById('sp-study-evening').value||'').trim();
+  const study_time_evening_hours=studyEveningRaw===''?null:Math.max(0,parseFloat(studyEveningRaw));
+  const studyNightRaw=(document.getElementById('sp-study-night').value||'').trim();
+  const study_time_night_hours=studyNightRaw===''?null:Math.max(0,parseFloat(studyNightRaw));
+  const skill_level_per_subject=(document.getElementById('sp-self-level').value||'').trim();
+  const gamification_preference=(document.getElementById('sp-gamified').value||'').trim().toLowerCase();
+  const attention_span_preference=(document.getElementById('sp-attention-span').value||'').trim();
+  const primary_struggle_area=(document.getElementById('sp-struggle-area').value||'').trim();
+
+  const goal='General learning';
+  const weak_areas=primary_struggle_area||null;
+  const preferred_difficulty_level=skill_level_per_subject==='Advanced'?'Hard':(skill_level_per_subject==='Intermediate'?'Medium':'Easy');
+  const time_limit_per_question_seconds=null;
+  const feedback_detail_level='detailed';
+  const preferred_examples_domain='daily life';
+  const confidence_per_topic={};
+  const assignment_deadlines=[];
+  const custom_rubric_weights={};
+  const minimum_passing_thresholds={};
+  const export_formats=[];
+  const plagiarism_check_enabled=false;
+
+  const selectedLearningStyle='';
+  const classRosterCsv='';
+
+  if(!candidate_name){toast('Enter your name','err');return;}
+  if(!student_class){toast('Select Class / Grade','err');return;}
+  if(!curriculum){toast('Select Board','err');return;}
+  if(!language){toast('Select Language','err');return;}
+  if(!learning_pace){toast('Select Learning Pace','err');return;}
+  if(!skill_level_per_subject){toast('Select Self-level','err');return;}
+  if(!gamification_preference){toast('Select Gamified preference','err');return;}
+  if(!attention_span_preference){toast('Select Attention Span','err');return;}
+  if(!primary_struggle_area){toast('Select what you struggle with most','err');return;}
+
+  load('Saving student profile…');
+  try{
+    const r=await fetch(EA+'/student-profile',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        student_id:student_id||null,
+        candidate_name,student_class,curriculum,learning_style_preference:selectedLearningStyle,subject,language,teaching_mode,
+        skill_level_per_subject:skill_level_per_subject||null,
+        goal,
+        weak_areas:weak_areas||null,
+        explanation_style,
+        avg_study_time_minutes_per_day,
+        study_time_morning_hours,
+        study_time_afternoon_hours,
+        study_time_evening_hours,
+        study_time_night_hours,
+        preferred_difficulty_level,
+        attention_span_preference,
+        primary_struggle_area,
+        learning_pace,
+        time_limit_per_question_seconds,
+        feedback_detail_level,
+        confidence_per_topic,
+        preferred_examples_domain,
+        gamification_preference,
+        class_roster_csv_text:classRosterCsv||null,
+        assignment_deadlines,
+        custom_rubric_weights,
+        minimum_passing_thresholds,
+        export_formats,
+        plagiarism_check_enabled
+      })
+    });
+    if(!r.ok){
+      const e=await r.json().catch(()=>({}));
+      throw new Error(e.detail||('API error '+r.status));
+    }
+    const data=await r.json();
+    setStudentProfile((data&&data.profile)||{
+      student_id:student_id||'',candidate_name,student_class,curriculum,subject,language,teaching_mode,
+      learning_style_preference:'',
+      skill_level_per_subject,goal,weak_areas,explanation_style,avg_study_time_minutes_per_day,preferred_difficulty_level,
+      attention_span_preference,primary_struggle_area,
+      learning_pace,time_limit_per_question_seconds,feedback_detail_level,confidence_per_topic,
+      preferred_examples_domain,gamification_preference,class_roster_csv_text:classRosterCsv,assignment_deadlines,
+      custom_rubric_weights,minimum_passing_thresholds,export_formats,plagiarism_check_enabled
+    });
+    if(data&&data.profile&&data.profile.student_id){
+      localStorage.setItem('AGENIX_STUDENT_ID',data.profile.student_id);
+    }
+    pushCandidateHistory({
+      role:'student',
+      mode:S.mode||'generate',
+      name:S.studentProfile.candidate_name,
+      student_id:S.studentProfile.student_id,
+      student_class:S.studentProfile.student_class,
+      curriculum:S.studentProfile.curriculum,
+      language:S.studentProfile.language,
+      at:Date.now()
+    });
+    resetFeatureSelection();
+    show('s-feat');
+    refreshCoachGreeting();
+    toast('Profile saved! Your Student ID: '+(S.studentProfile.student_id||'N/A'));
+  }catch(e){
+    const msg=(e&&e.message)?e.message:String(e);
+    if(msg.toLowerCase().includes('failed to fetch')||msg.toLowerCase().includes('networkerror')){
+      toast('Cannot save profile: Essay API is offline. Start run_servers.bat and try again.','err');
+    }else{
+      toast('Error: '+msg,'err');
+    }
+  }finally{uload();}
+}
+
+async function goRole(role,mode){
+  S.role=role;S.mode=mode;
+  localStorage.setItem('AGENIX_LAST_ROLE', role);
+  localStorage.setItem('AGENIX_LAST_MODE', mode);
+  pushCandidateHistory({
+    role,
+    mode,
+    name:role==='teacher'?'Teacher user':(S.studentProfile.candidate_name||'Student user'),
+    student_id:role==='student'?(S.studentProfile.student_id||''):'',
+    student_class:role==='student'?(S.studentProfile.student_class||''):'',
+    curriculum:role==='student'?(S.studentProfile.curriculum||''):'',
+    language:role==='student'?(S.studentProfile.language||''):'',
+    at:Date.now()
+  });
+  resetFeatureSelection();
+  if(role==='student'){
+    await openStudentProfileScreen({lookupProgress:mode==='evaluate',progressOnly:mode==='evaluate'});
+    return;
+  }
+  show('s-feat');
+}
+
+function formatProgressTime(ts){
+  const value=Number(ts||0)*1000;
+  if(!value) return 'Unknown';
+  try{
+    return new Date(value).toLocaleString();
+  }catch(_){
+    return 'Unknown';
+  }
+}
+
+function renderStudentProgress(bundle, requestedId){
+  const summaryEl=document.getElementById('sp-progress-summary');
+  const historyEl=document.getElementById('sp-progress-history');
+  const statsEl=document.getElementById('sp-progress-stats');
+  const profile=bundle&&bundle.profile?bundle.profile:null;
+  const summary=bundle&&bundle.summary?bundle.summary:null;
+  const activities=Array.isArray(bundle&&bundle.activities)?bundle.activities:[];
+  if(summaryEl){
+    if(!bundle || !bundle.found || !profile){
+      summaryEl.textContent='No progress data found for this Student ID.';
+    }else{
+      const latest=summary&&summary.latest_activity?summary.latest_activity:null;
+      summaryEl.innerHTML=`<div class="progress-inline"><span class="pill acc">${profile.candidate_name||'Student'}</span><span class="pill dim">ID: ${profile.student_id||requestedId||'N/A'}</span><span class="pill grn">Overall ${Number(profile.performance_avg_score||0).toFixed(1)}%</span></div><div style="margin-top:.55rem">${summary.total_entries||0} entries across ${summary.unique_features||0} features${latest ? ` · last used <strong>${latest.feature||'feature'}</strong> at ${formatProgressTime(latest.created_at)}` : ''}</div>`;
+    }
+  }
+  if(statsEl){
+    if(!bundle || !bundle.found || !profile){
+      statsEl.innerHTML='';
+    }else{
+      const featureSummary=Array.isArray(summary&&summary.feature_summary)?summary.feature_summary:[];
+      const latest=summary&&summary.latest_activity?summary.latest_activity:null;
+      statsEl.innerHTML=[
+        {lbl:'Attempts',val:String(summary.total_entries||0),hint:'All tracked entries'},
+        {lbl:'Features',val:String(summary.unique_features||0),hint:'Used modules'},
+        {lbl:'Avg Score',val:Number(profile.performance_avg_score||0).toFixed(1)+'%',hint:'Overall profile score'},
+        {lbl:'Last Used',val:latest?String(latest.feature||'N/A'):'N/A',hint:latest?formatProgressTime(latest.created_at):'No activity yet'}
+      ].map(item=>`<div class="pstat"><span class="lbl">${item.lbl}</span><span class="val">${item.val}</span><span class="hint">${item.hint}</span></div>`).join('');
+      if(featureSummary.length){
+        statsEl.innerHTML+=`<div class="pstat" style="grid-column:1/-1"><span class="lbl">Feature breakdown</span><span class="hint" style="margin-top:.15rem">${featureSummary.slice(0,4).map(x=>`${x.feature}: ${x.attempts} attempt(s)${x.average_score===null||x.average_score===undefined?'':` · ${Number(x.average_score).toFixed(1)}% avg`}`).join('<br>')}</span></div>`;
+      }
+    }
+  }
+  if(historyEl){
+    if(!bundle || !bundle.found || !activities.length){
+      historyEl.innerHTML='<div class="progress-empty">No activity history available yet.</div>';
+    }else{
+      const rows=activities.slice(0,12).map((item,idx)=>{
+        const meta=item.metadata||{};
+        const bits=[];
+        if(meta.difficulty) bits.push(`difficulty: ${meta.difficulty}`);
+        if(meta.question_count) bits.push(`questions: ${meta.question_count}`);
+        if(meta.essay_topic) bits.push(`topic: ${meta.essay_topic}`);
+        if(meta.topic) bits.push(`topic: ${meta.topic}`);
+        const score=item.score_percent==null?'N/A':Number(item.score_percent).toFixed(1)+'%';
+        return `<div class="progress-item">
+          <div class="progress-item-head">
+            <div>
+              <div class="progress-item-title">${item.feature||'general'}</div>
+              <div class="progress-item-meta">${formatProgressTime(item.created_at)}</div>
+            </div>
+            <div class="progress-inline">
+              <span class="pill acc">${item.event_type||'attempt'}</span>
+              <span class="pill ${item.score_percent==null?'dim':Number(item.score_percent)>=60?'grn':'acc'}">${score}</span>
+            </div>
+          </div>
+          <div class="progress-item-meta">Duration: ${item.duration_minutes==null?'N/A':item.duration_minutes+' min'}</div>
+          ${bits.length?`<div class="progress-item-foot">${bits.join(' · ')}</div>`:''}
+        </div>`;
+      }).join('');
+      historyEl.innerHTML=rows;
+    }
+  }
+  if(requestedId){
+    document.getElementById('sp-existing-id').value=requestedId;
+    document.getElementById('sp-progress-id').value=requestedId;
+  }
+}
+
+async function fetchStudentProgressById(studentId, opts={}){
+  const requestedId=(studentId||document.getElementById('sp-progress-id').value||document.getElementById('sp-existing-id').value||'').trim();
+  if(!requestedId){toast('Enter a Student ID to check progress','err');return;}
+  load('Fetching progress by Student ID…');
+  try{
+    const r=await fetch(EA+'/student-progress/'+encodeURIComponent(requestedId)+'?limit=100');
+    if(!r.ok){
+      const e=await r.json().catch(()=>({}));
+      throw new Error(e.detail||('API error '+r.status));
+    }
+    const data=await r.json();
+    if(data&&data.found&&data.profile){
+      setStudentProfile(data.profile);
+      localStorage.setItem('AGENIX_STUDENT_ID',data.profile.student_id||requestedId);
+      renderStudentProgress(data, requestedId);
+      if(!opts.fromProfileFetch) toast('Progress loaded successfully!');
+      return data;
+    }
+    renderStudentProgress(data, requestedId);
+    toast('No progress found for this Student ID','err');
+    return data;
+  }catch(e){
+    toast('Error: '+((e&&e.message)?e.message:String(e)),'err');
+  }finally{uload();}
+}
+
+async function downloadStudentProgressReport(){
+  const studentId=(document.getElementById('sp-progress-id').value||document.getElementById('sp-existing-id').value||S.studentProfile.student_id||'').trim();
+  if(!studentId){toast('Enter a Student ID first','err');return;}
+  load('Generating progress report PDF…');
+  try{
+    const r=await fetch(EA+'/student-progress/report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({student_id:studentId,limit:100})});
+    if(!r.ok){
+      const e=await r.json().catch(()=>({}));
+      throw new Error(e.detail||('Report API error '+r.status));
+    }
+    const blob=await r.blob();
+    const u=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=u;a.download=studentId+'_progress_report.pdf';a.click();
+    toast('Progress report downloaded!');
+  }catch(e){
+    toast('Error: '+e.message,'err');
+  }finally{uload();}
+}
+
+function onFDrop(){
+  const v=document.getElementById('fdrop').value;
+  if(!v||v==='more'){document.getElementById('fopts').style.display='none';document.getElementById('bgo').disabled=true;refreshCoachGreeting();return;}
+  S.feat=v;buildFOpts(v);
+  document.getElementById('fopts').style.display='grid';
+  document.getElementById('bgo').disabled=false;
+  refreshCoachGreeting();
+}
+
+function buildFOpts(feat){
+  const isT=S.role==='teacher';
+  const opts=feat==='essay'
+    ?[{k:'evaluate',ic:'🔍',cl:'fib',t:'Evaluate Essay',d:'AI-score essays on any parameters.'},
+      {k:'generate',ic:'✨',cl:'fig',t:'Generate Question',d:'AI-generate essay questions from any topic.'}]
+    :feat==='quiz'
+    ?[{k:'generate',ic:'🧩',cl:'fib',t:'Generate Quiz',d:'Create quizzes with difficulty control.'},
+      {k:'evaluate',ic:'📊',cl:'fig',t:'Evaluate Answers',d:'Submit answers & see category scores.'}]
+    :[{k:'generate',ic:'📖',cl:'fib',t:'Paragraph Reading',d:'Generate and answer paragraph reading questions in a session.'}];
+  const s=isT?opts:[...opts].reverse();
+  document.getElementById('fopts').innerHTML=s.map((o,i)=>`
+    <div class="fcard ${S.mode===o.k?'sel':''}" onclick="pickMode('${o.k}',this)">
+      <div class="fi ${o.cl}">${o.ic}</div>
+      <div style="display:flex;align-items:center;gap:.38rem;margin-bottom:.18rem">
+        <h3>${o.t}</h3>
+        <span class="tpri ${i===0?(isT?'tblue':'tgreen'):'tdim'}" style="font-size:.59rem">${i===0?'PRIMARY':'SECONDARY'}</span>
+      </div>
+      <p>${o.d}</p>
+    </div>`).join('');
+  S.mode=s[0].k;
+}
+
+function pickMode(mode,el){
+  S.mode=mode;
+  el.closest('.fg').querySelectorAll('.fcard').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  refreshCoachGreeting();
+}
+
+function launch(){
+  if(!S.feat)return;
+  if(S.role==='student'&&!ensureStudentProfile('x','S')) return;
+  buildChips();
+  document.getElementById('nsel').value=S.feat;
+  document.getElementById('udot').className='udot '+(S.role==='teacher'?'db':'gb');
+  document.getElementById('bgo').className='bgo '+(S.role==='teacher'?'blue':'green');
+  syncStudentProfileToUI();
+  renderTopUserBadge();
+  refreshCoachGreeting();
+  switchPanel();show('s-app');
+  setPrqMode('T',S.prqMode.T||'generate');
+  setPrqMode('S',S.prqMode.S||'generate');
+}
+
+function switchPanel(){
+  const feat=document.getElementById('nsel').value;
+  S.feat=feat;
+  ['essay','quiz','prq'].forEach(f=>document.getElementById('p-'+f).classList[f===feat?'add':'remove']('on'));
+  ['essay','quiz','prq'].forEach(f=>{
+    const T=document.getElementById(f[0].toUpperCase()+f.slice(1).replace('essay','e').replace('quiz','q')+'T');
+    // Use direct IDs
+  });
+  const role=S.role;
+  document.getElementById('eT').style.display=role==='teacher'&&feat==='essay'?'block':'none';
+  document.getElementById('eS').style.display=role==='student'&&feat==='essay'?'block':'none';
+  document.getElementById('qT').style.display=role==='teacher'&&feat==='quiz'?'block':'none';
+  document.getElementById('qS').style.display=role==='student'&&feat==='quiz'?'block':'none';
+  document.getElementById('pT').style.display=role==='teacher'&&feat==='prq'?'block':'none';
+  document.getElementById('pS').style.display=role==='student'&&feat==='prq'?'block':'none';
+  refreshCoachGreeting();
+}
+
+// ═══════════════ UTIL ═════════════════
+function load(m='Processing…'){
+  document.getElementById('spmsg').textContent=m;
+  document.getElementById('ov').classList.add('on');
+  PROG_VALUE=10;
+  const fill=document.getElementById('prog-fill');
+  if(fill) fill.style.width=PROG_VALUE+'%';
+  if(PROG_TIMER) clearInterval(PROG_TIMER);
+  PROG_TIMER=setInterval(()=>{
+    PROG_VALUE=Math.min(92,PROG_VALUE+Math.max(1,Math.floor((96-PROG_VALUE)/8)));
+    if(fill) fill.style.width=PROG_VALUE+'%';
+  },350);
+}
+function uload(){
+  const fill=document.getElementById('prog-fill');
+  if(fill) fill.style.width='100%';
+  if(PROG_TIMER){clearInterval(PROG_TIMER);PROG_TIMER=null;}
+  setTimeout(()=>{document.getElementById('ov').classList.remove('on'); if(fill) fill.style.width='0%';},120);
+}
+function toast(m,t='ok'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3500);}
+
+function renderTopUserBadge(){
+  const nameEl=document.getElementById('ulbl');
+  const idEl=document.getElementById('uidbl');
+  if(!nameEl||!idEl) return;
+  const isTeacher=S.role==='teacher';
+  const name=isTeacher ? 'Teacher' : (S.studentProfile.candidate_name ? 'Student: '+S.studentProfile.candidate_name : 'Student');
+  const studentId=!isTeacher ? String(S.studentProfile.student_id||'').trim() : '';
+  nameEl.textContent=name;
+  if(studentId){
+    idEl.textContent=studentId;
+    idEl.style.display='block';
+  }else{
+    idEl.textContent='';
+    idEl.style.display='none';
+  }
+}
+
+function toggleTheme(){
+  document.body.classList.toggle('light-mode');
+  localStorage.setItem('AGENIX_THEME',document.body.classList.contains('light-mode')?'light':'dark');
+}
+
+async function api(base,path,data){
+  const url=base+path;
+  try{
+    const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    if(!r.ok){
+      const e=await r.json().catch(()=>({}));
+      const msg=((e.error&&e.error.message)||e.detail||('API error '+r.status));
+      throw new Error(msg+' ('+url+')');
+    }
+    return r.json();
+  }catch(err){
+    const msg=(err&&err.message)?err.message:String(err);
+    if(msg.toLowerCase().includes('failed to fetch')||msg.toLowerCase().includes('networkerror')){
+      throw new Error('Cannot reach API at '+url+'. Run run_servers.bat (recommended) or start manually: python fastapi_app.py, python quiz_fastapi_app.py, python para_read_fastapi.py');
+    }
+    throw err;
+  }
+}
+
+function wcnt(tid,cid){const w=document.getElementById(tid).value.trim().split(/\s+/).filter(Boolean).length;document.getElementById(cid).textContent=w+' word'+(w!==1?'s':'');}
+
+function step(pfx,a){for(let i=1;i<=3;i++){const el=document.getElementById(pfx+i);if(el)el.className='step'+(i<a?' done':i===a?' act':'');}}
+
+function getStudentProfile(prefix,r){
+  return {
+    student_id:S.studentProfile.student_id||null,
+    student_class:S.studentProfile.student_class||null,
+    curriculum:S.studentProfile.curriculum||null,
+    learning_style_preference:S.studentProfile.learning_style_preference||'short-steps',
+    subject:S.studentProfile.subject||null,
+    language:S.studentProfile.language||null,
+    teaching_mode:S.studentProfile.teaching_mode||null,
+    skill_level_per_subject:S.studentProfile.skill_level_per_subject||null,
+    goal:S.studentProfile.goal||null,
+    weak_areas:S.studentProfile.weak_areas||null,
+    explanation_style:S.studentProfile.explanation_style||null,
+    avg_study_time_minutes_per_day:S.studentProfile.avg_study_time_minutes_per_day,
+    preferred_difficulty_level:S.studentProfile.preferred_difficulty_level||null,
+    attention_span_preference:S.studentProfile.attention_span_preference||'10-20 min',
+    primary_struggle_area:S.studentProfile.primary_struggle_area||S.studentProfile.weak_areas||null,
+    learning_pace:S.studentProfile.learning_pace||'average',
+    time_limit_per_question_seconds:S.studentProfile.time_limit_per_question_seconds,
+    feedback_detail_level:S.studentProfile.feedback_detail_level||'detailed',
+    confidence_per_topic:S.studentProfile.confidence_per_topic||{},
+    preferred_examples_domain:S.studentProfile.preferred_examples_domain||'daily life',
+    gamification_preference:S.studentProfile.gamification_preference||'yes',
+    class_roster_csv_text:S.studentProfile.class_roster_csv_text||null,
+    assignment_deadlines:S.studentProfile.assignment_deadlines||[],
+    custom_rubric_weights:S.studentProfile.custom_rubric_weights||{},
+    minimum_passing_thresholds:S.studentProfile.minimum_passing_thresholds||{},
+    export_formats:S.studentProfile.export_formats||[],
+    plagiarism_check_enabled:!!S.studentProfile.plagiarism_check_enabled,
+    learner_context:buildLearnerContext('student feature'),
+  };
+}
+
+function buildLearnerContext(featureLabel='all features'){
+  const p=S.studentProfile||{};
+  const perfSessions=Number(p.performance_sessions||0);
+  const perfAvg=Number(p.performance_avg_score||0);
+  return [
+    `Learner context for ${featureLabel}:`,
+    `- Student ID: ${p.student_id||'Not available'}`,
+    `- Preferred subject: ${p.subject||'Not specified'}`,
+    `- Skill level per subject: ${p.skill_level_per_subject||'Not specified'}`,
+    `- Goal: ${p.goal||'General learning'}`,
+    `- Weak areas: ${p.weak_areas||'Not specified'}`,
+    `- Preferred explanation style: ${p.explanation_style||'Step-by-step'}`,
+    `- Preferred difficulty level: ${p.preferred_difficulty_level||'Medium'}`,
+    `- Self-level: ${p.skill_level_per_subject||'Not specified'}`,
+    `- Attention span: ${p.attention_span_preference||'10-20 min'}`,
+    `- Primary struggle area: ${p.primary_struggle_area||p.weak_areas||'Not specified'}`,
+    `- Learning style preference: ${p.learning_style_preference||'short-steps'}`,
+    `- Learning pace: ${p.learning_pace||'average'}`,
+    `- Time limit per question (seconds): ${p.time_limit_per_question_seconds==null?'Not specified':p.time_limit_per_question_seconds}`,
+    `- Feedback detail level: ${p.feedback_detail_level||'detailed'}`,
+    `- Preferred examples domain: ${p.preferred_examples_domain||'daily life'}`,
+    `- Gamification preference: ${p.gamification_preference||'yes'}`,
+    `- Average study time/day (minutes): ${p.avg_study_time_minutes_per_day==null?'Not specified':p.avg_study_time_minutes_per_day}`,
+    `- Language: ${p.language||'English'}`,
+    `- Teaching mode: ${p.teaching_mode||'Pictorial / visual'}`,
+    `- Class/Grade: ${p.student_class||'Not specified'}`,
+    `- Curriculum/Board: ${p.curriculum||'Not specified'}`,
+    `- Performance sessions so far: ${perfSessions}`,
+    `- Performance average so far: ${perfSessions>0?perfAvg.toFixed(1)+'%':'Not available'}`,
+    'Apply this profile consistently across the response.'
+  ].join('\n');
+}
+
+function editStudentProfile(){
+  show('s-prof');
+  syncStudentProfileToUI();
+}
+
+function setPrqMode(r,mode){
+  S.prqMode[r]=mode;
+  ['generate','topic','review'].forEach(m=>{
+    const btn=document.getElementById(`p${r}-mode-${m}`);
+    if(btn) btn.className='btn '+(m===mode?(m==='generate'?'bg':'bl'):'bo');
+    const box=document.getElementById(`prq-${m}-${r}`);
+    if(box) box.style.display=m===mode?'block':'none';
+  });
+  const customBtn=document.getElementById(`p${r}-mode-custom`);
+  if(customBtn) customBtn.className='btn '+(mode==='custom'?'bg':'bo');
+  const customBox=document.getElementById(`prq-custom-${r}`);
+  if(customBox) customBox.style.display=mode==='custom'?'block':'none';
+  const passBox=document.getElementById(`prq-pass-${r}`);
+  if(passBox) passBox.style.display=mode==='generate'?'block':'none';
+  const topicOut=document.getElementById(`p${r}-topic-out`);
+  if(topicOut) topicOut.style.display=mode==='topic'?'block':'none';
+  if(mode==='custom') syncPrqCustomUI(r);
+  if(S.feat==='prq') refreshCoachGreeting();
+}
+
+function setPrqOwnership(r, field, value){
+  if(!S.prqOwnership[r]) S.prqOwnership[r]={paragraph:'agent',question:'agent',answer:'myself'};
+  S.prqOwnership[r][field]=value==='myself'?'myself':'agent';
+  syncPrqCustomUI(r);
+}
+
+function getPrqOwnership(r){
+  const current=S.prqOwnership[r]||{paragraph:'agent',question:'agent',answer:'myself'};
+  return {
+    paragraph: current.paragraph==='myself'?'myself':'agent',
+    question: current.question==='myself'?'myself':'agent',
+    answer: current.answer==='agent'?'agent':'myself'
+  };
+}
+
+function getPrqCustomWorkflow(ownership){
+  if(ownership.paragraph==='agent') return 'topic';
+  if(ownership.question==='myself') return 'review';
+  return 'pass';
+}
+
+function syncPrqCustomUI(r){
+  const ownership=getPrqOwnership(r);
+  const workflow=getPrqCustomWorkflow(ownership);
+  const setSelect=(id,val)=>{const el=document.getElementById(id); if(el) el.value=val;};
+  setSelect(`p${r}-own-par`, ownership.paragraph);
+  setSelect(`p${r}-own-que`, ownership.question);
+  setSelect(`p${r}-own-ans`, ownership.answer);
+
+  const topicCard=document.getElementById(`prq-topic-${r}`);
+  const passCard=document.getElementById(`prq-pass-${r}`);
+  const reviewCard=document.getElementById(`prq-review-${r}`);
+  const genCard=document.getElementById(`prq-generate-${r}`);
+
+  if(topicCard) topicCard.style.display=workflow==='topic' ? 'block' : 'none';
+  if(passCard) passCard.style.display=workflow==='pass' ? 'block' : 'none';
+  if(reviewCard) reviewCard.style.display=workflow==='review' ? 'block' : 'none';
+  if(genCard) genCard.style.display=workflow==='pass' ? 'block' : 'none';
+
+  const submitBtn=document.querySelector(`#p${r}-qs button[onclick="submitPrq('${r}')"]`);
+  if(submitBtn){
+    submitBtn.textContent=ownership.answer==='agent' ? '🤖 Auto Answer & Evaluate' : '✅ Submit Answers';
+  }
+
+  const customBox=document.getElementById(`prq-custom-${r}`);
+  if(customBox){
+    const notes=customBox.querySelectorAll('.qbox');
+    const note=notes.length ? notes[notes.length-1] : null;
+    if(note){
+      const workflowLabel=workflow==='topic' ? 'Topic → Paragraph + Questions' : workflow==='review' ? 'Paste Paragraph + Questions' : 'Paste Paragraph for Questions';
+      note.textContent=`Paragraph: ${ownership.paragraph} | Question: ${ownership.question} | Answer: ${ownership.answer}. Active flow: ${workflowLabel}. Evaluation stays with the agent.`;
+    }
+  }
+}
+
+function ensureStudentProfile(prefix,r){
+  if(r!=='S') return true;
+  const p=S.studentProfile;
+  if(!p.student_id||!p.candidate_name||!p.student_class||!p.curriculum||!p.language||!p.learning_pace){
+    toast('Complete student profile first','err');
+    show('s-prof');
+    syncStudentProfileToUI();
+    return false;
+  }
+  return true;
+}
+
+async function recordStudentPerformance(module, scorePercent, extraMeta={}){
+  const studentId=(S.studentProfile.student_id||'').trim();
+  if(!studentId) return;
+  try{
+    const payload={
+      student_id:studentId,
+      module:String(module||'general').toLowerCase(),
+      score_percent:Number(scorePercent||0),
+      metadata:extraMeta||{}
+    };
+    const r=await fetch(EA+'/student-profile/performance',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    if(!r.ok) return;
+    const data=await r.json().catch(()=>null);
+    if(data&&data.profile){
+      setStudentProfile(data.profile);
+      localStorage.setItem('AGENIX_STUDENT_ID',data.profile.student_id||studentId);
+    }
+  }catch(_){ }
+}
+
+function getCandidateName(prefix,r){
+  if(r==='S') return S.studentProfile.candidate_name||'Candidate';
+  return (document.getElementById(prefix+r+'-nm').value.trim())||'Candidate';
+}
+
+// ═══════════════ PARAMS ═══════════════
+function buildChips(){
+  document.getElementById('eT-chips').innerHTML=PARAMS.map(p=>`
+    <span class="chip ${S.params.has(p)?'on':''}" onclick="togP('${p}',this)">${p}</span>`).join('');
+}
+function togP(p,el){
+  if(S.params.has(p)){
+    S.params.delete(p);
+    el.classList.remove('on');
+    return;
+  }
+  if(S.params.size>=5){
+    toast('Select only 5 evaluation parameters','err');
+    return;
+  }
+  S.params.add(p);
+  el.classList.add('on');
+}
+  function selAll(){preset();}
+function clrPar(){S.params.clear();buildChips();}
+function preset(){S.params.clear();PRESET.forEach(p=>S.params.add(p));buildChips();}
+
+// ═══════════════ STEPPER ══════════════
+function adj(r,d){S.qcnt[r]=Math.max(2,Math.min(20,(S.qcnt[r]||5)+d));document.getElementById('q'+r+'-cnt').textContent=S.qcnt[r];}
+
+// ═══════════════ TAGS ═════════════════
+function addTag(e,r){
+  if(e.key!=='Enter')return;
+  const inp=document.getElementById('q'+r+'-ti');
+  const v=inp.value.trim();
+  if(!v)return;
+  if(!S.tags[r].includes(v)){S.tags[r].push(v);renderTags(r);}
+  inp.value='';
+}
+function rmTag(r,i){S.tags[r].splice(i,1);renderTags(r);}
+function renderTags(r){
+  const w=document.getElementById('q'+r+'-tw'),inp=document.getElementById('q'+r+'-ti');
+  w.querySelectorAll('.ctag').forEach(t=>t.remove());
+  S.tags[r].forEach((t,i)=>{
+    const el=document.createElement('span');el.className='ctag';
+    el.innerHTML=`${t}<button onclick="rmTag('${r}',${i})">×</button>`;
+    w.insertBefore(el,inp);
+  });
+}
+
+function parseSubcategories(text){
+  const jsonMatch = text.match(/\[\s*"([\s\S]*?)"\s*\]/);
+  if(jsonMatch){
+    try{
+      const list = JSON.parse(text.slice(text.indexOf('['), text.lastIndexOf(']')+1));
+      if(Array.isArray(list)) return list.map(c=>String(c).trim()).filter(Boolean).slice(0,5);
+    }catch(_){ }
+  }
+  const cleaned = text.replace(/subcategories?:/i,'').replace(/\b(\d+\.|[-*•])\s*/g,'');
+  return cleaned.split(/[\n,;]+/).map(l=>l.trim()).filter(l=>l.length>1 && l.length<50).slice(0,5);
+}
+
+// ═══════════════ SUBCATS (debounced) ══
+function debounceSub(r){
+  clearTimeout(S.stimer[r]);
+  S.stimer[r]=setTimeout(()=>fetchSubcats(r),700);
+}
+async function fetchSubcats(r){
+  const topic=document.getElementById('q'+r+'-tp').value.trim();
+  if(topic.length<3){document.getElementById('q'+r+'-scbox').classList.remove('on');return;}
+  try{
+    const res=await api(EA,'/generate-question',{basis:'List 5 useful subcategories for the topic: '+topic});
+    const text=res.question||'';
+    const suggestions=parseSubcategories(text);
+    if(suggestions.length){
+      renderSubcats(r,suggestions);
+    } else {
+      document.getElementById('q'+r+'-scbox').classList.remove('on');
+      S.scats[r]=[];
+    }
+  }catch(_){
+    document.getElementById('q'+r+'-scbox').classList.remove('on');
+    S.scats[r]=[];
+  }
+}
+function renderSubcats(r,cats){
+  S.scats[r]=cats;
+  const selected = new Set(S.tags[r] || []);
+  document.getElementById('q'+r+'-scc').innerHTML=cats.map((c,i)=>`
+    <span class="scchip ${selected.has(c)?'on':''}" onclick="togScat('${r}',${i},this)">${c}</span>`).join('');
+  document.getElementById('q'+r+'-scbox').classList.add('on');
+}
+function togScat(r,i,el){
+  const cat=S.scats[r][i];
+  el.classList.toggle('on');
+  if(el.classList.contains('on')){
+    if(!S.tags[r].includes(cat)){
+      S.tags[r].push(cat);
+      renderTags(r);
+    }
+  } else {
+    S.tags[r]=S.tags[r].filter(t=>t!==cat);
+    renderTags(r);
+  }
+}
+
+// ═══════════════ ESSAY — GENERATE Q ══
+async function genQ(r){
+  const tp=document.getElementById('e'+r+'-tp').value.trim();
+  if(!tp){toast('Enter a topic first','err');return;}
+  if(!ensureStudentProfile('e',r)) return;
+  const profile=getStudentProfile('e',r);
+  load('Generating question…');
+  try{
+    const res=await api(EA,'/generate-question',{basis:tp,...profile,learner_context:buildLearnerContext('essay question')});
+    const q=res.question||'No question returned.';
+    const box=document.getElementById('e'+r+'-qb');
+    box.textContent=q;box.classList.add('filled');
+    if(r==='S')step('eS',2);
+    toast('Question generated!');
+  }catch(e){toast('Error: '+e.message,'err');}
+  finally{uload();}
+}
+
+// ═══════════════ ESSAY — EVALUATE ═════
+async function evalEssay(r){
+  const name=getCandidateName('e',r);
+  const essay=document.getElementById('e'+r+'-ess').value.trim();
+  const params=r==='T'?[...S.params]:PRESET;
+  const pfx='e'+r;
+  if(!ensureStudentProfile('e',r)) return;
+
+  if(essay.split(/\s+/).filter(Boolean).length<100){toast('Essay must be at least 100 words','err');return;}
+  if(r==='T'&&params.length!==5){toast('Select exactly 5 evaluation parameters','err');return;}
+
+  load('Evaluating essay with AI… This may take a moment.');
+  step(pfx,2);
+  try{
+    const profile=getStudentProfile('e',r);
+    const res=await api(EA,'/evaluate',{essay,parameters:params,candidate_name:name,...profile,learner_context:buildLearnerContext('essay feedback')});
+    storeEssayRun(r,res,essay,params,name);
+    if(r==='S'){
+      await recordStudentPerformance('essay',(Number(res.avg_score||0)*10),{parameters:params,topic:res.essay_topic||''});
+    }
+    S.essayFlowStage[r]='samplePrompt';
+    S.essaySampleText[r]='';
+    step(pfx,3);
+    renderEssayRes(res,'e'+r+'-rb');
+    const sec=document.getElementById('e'+r+'-res');
+    sec.classList.add('on');
+    setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),100);
+    toast('Evaluation complete!');
+  }catch(e){toast('Error: '+e.message,'err');step(pfx,1);}
+  finally{uload();}
+}
+
+function renderEssayRes(r,bid){
+  const avg=parseFloat(r.avg_score)||0;
+  const pct=(avg/10*100).toFixed(1);
+  const passed=avg>=7;
+  const essayRole=(bid||'').startsWith('eS')?'S':'T';
+  const sc=v=>v>=8?'svg':v>=6?'sva':'svr';
+  const bc=v=>v>=8?'bfg':v>=6?'bfa':'bfr';
+
+  let h=`<div class="sg">
+    <div class="sc"><div class="sl">AVG SCORE</div><div class="sv ${sc(avg)}">${avg.toFixed(2)}<span style="font-size:.8rem;color:var(--t3)">/10</span></div></div>
+    <div class="sc"><div class="sl">PERCENTAGE</div><div class="sv ${sc(avg)}">${pct}%</div></div>
+    <div class="sc"><div class="sl">PARAMETERS</div><div class="sv svb">${Object.keys(r.scores||{}).length}</div></div>
+    <div class="sc"><div class="sl">STATUS</div><div style="margin-top:.3rem"><span class="badge ${passed?'pass':'fail'}">${passed?'✓ PASS':'✗ FAIL'}</span></div></div>
+  </div>`;
+
+  h+=`<div class="fb ${passed?'g':''}"><p>${r.overall_feedback||''}</p></div>`;
+  if(r.essay_topic)h+=`<p style="font-size:.76rem;color:var(--t2);margin-bottom:.85rem">📌 Topic identified: <strong style="color:var(--t1)">${r.essay_topic}</strong></p>`;
+
+  if(r.scores&&Object.keys(r.scores).length){
+    h+=`<div style="overflow-x:auto"><table class="ptbl"><thead><tr><th>Parameter</th><th>Score</th><th style="min-width:130px">Performance</th><th>Feedback</th></tr></thead><tbody>`;
+    Object.entries(r.scores).forEach(([p,v])=>{
+      const pb=(v/10*100);const fb=(r.feedbacks||{})[p]||'';
+      const feedbackCell = essayRole==='T'
+        ? `<textarea class="ftxt" style="min-height:74px" oninput="editEssayFeedback('${essayRole}','${encodeURIComponent(p)}',this.value)">${escapeHtml(fb)}</textarea>`
+        : `<span style="font-size:.76rem;color:var(--t2);max-width:240px;line-height:1.5;display:block">${fb}</span>`;
+      h+=`<tr>
+        <td><strong>${p}</strong></td>
+        <td style="font-family:var(--mono);font-weight:600">${v}/10</td>
+        <td><div class="bw"><div class="bar"><div class="bf ${bc(v)}" style="width:${pb}%"></div></div><span style="font-size:.7rem;color:var(--t2);min-width:28px">${pb.toFixed(0)}%</span></div></td>
+        <td>${feedbackCell}</td>
+      </tr>`;
+    });
+    h+=`</tbody></table></div>`;
+  }
+
+  if(essayRole==='T'){
+    const sessionHistory=getEssaySessionHistory(essayRole);
+    const lastRun=sessionHistory[sessionHistory.length-1] || null;
+    if(!S.essaySessionFinished[essayRole]){
+      h+=`<div class="crow" style="margin-top:.9rem"><div class="cic">🧪</div>
+        <div class="cinfo"><h3>Next Step</h3><p id="e${essayRole}-flow">Need a sample essay that scores highly on the selected parameters?</p></div>
+        <button class="bdl" onclick="askSampleEssay('${essayRole}')">⬇ Sample Essay</button>
+        <button class="bdl" onclick="finishEssaySession('${essayRole}')">✅ Finish Session</button></div>
+      <div id="e${essayRole}-sample-wrap" style="display:none"></div>
+      <div id="e${essayRole}-repeat-wrap" style="display:none"></div>`;
+    } else if(lastRun){
+      const profile=getStudentProfile('e',essayRole);
+      const sessionForReport=encodeURIComponent(JSON.stringify(sessionHistory));
+      const ne2=encodeURIComponent(lastRun.candidate_name||r.candidate_name||'Candidate');
+      const pcls2=encodeURIComponent(lastRun.student_class||profile.student_class||'');
+      const pcur2=encodeURIComponent(lastRun.curriculum||profile.curriculum||'');
+      const sp={};Object.entries(lastRun.scores||{}).forEach(([k,v])=>sp[k]=v*10);
+      const se=encodeURIComponent(JSON.stringify(sp));
+      const te=encodeURIComponent(lastRun.essay_topic||r.essay_topic||'');
+      h+=`<div class="crow" style="margin-top:.9rem"><div class="cic">📄</div>
+        <div class="cinfo"><h3>Detailed Report PDF</h3><p>Full per-parameter feedback for ${lastRun.candidate_name||r.candidate_name||'Candidate'}</p></div>
+        <button class="bdl" onclick="dlEssayRpt('${ne2}','${sessionForReport}','${pcls2}','${pcur2}')">⬇ Report</button></div>`;
+      if(avg>=7){
+        h+=`<div class="crow"><div class="cic">🏆</div>
+          <div class="cinfo"><h3>Certificate Eligible!</h3><p>${lastRun.candidate_name||r.candidate_name||'Candidate'} — ${avg.toFixed(2)}/10 — ${lastRun.essay_topic||r.essay_topic||''}</p></div>
+          <button class="bdl" onclick="dlEssayCert('${ne2}','${te}','${se}','${pcls2}','${pcur2}')">⬇ Certificate</button></div>`;
+      }
+    }
+  } else {
+    const profile=getStudentProfile('e',essayRole);
+    const sh=[{candidate_name:r.candidate_name||'Candidate',essay_question:'',essay_topic:r.essay_topic||'',essay:'',scores:r.scores||{},feedbacks:r.feedbacks||{},avg_score:r.avg_score||0,overall_feedback:r.overall_feedback||'',timestamp:Date.now()/1000,student_class:profile.student_class,curriculum:profile.curriculum}];
+    const she=encodeURIComponent(JSON.stringify(sh));
+    const ne2=encodeURIComponent(r.candidate_name||'Candidate');
+    const pcls2=encodeURIComponent(profile.student_class||'');
+    const pcur2=encodeURIComponent(profile.curriculum||'');
+    h+=`<div class="crow" style="margin-top:.75rem"><div class="cic">📄</div>
+      <div class="cinfo"><h3>Detailed Report PDF</h3><p>Full per-parameter feedback for ${r.candidate_name||'Candidate'}</p></div>
+      <button class="bdl" onclick="dlEssayRpt('${ne2}','${she}','${pcls2}','${pcur2}')">⬇ Report</button></div>`;
+    if(passed){
+      const sp={};Object.entries(r.scores||{}).forEach(([k,v])=>sp[k]=v*10);
+      const se=encodeURIComponent(JSON.stringify(sp));
+      const te=encodeURIComponent(r.essay_topic||'');
+      h+=`<div class="crow"><div class="cic">🏆</div>
+        <div class="cinfo"><h3>Certificate Eligible!</h3><p>${r.candidate_name||'Candidate'} — ${avg.toFixed(2)}/10 — ${r.essay_topic||''}</p></div>
+        <button class="bdl" onclick="dlEssayCert('${ne2}','${te}','${se}','${pcls2}','${pcur2}')">⬇ Certificate</button></div>`;
+    }
+  }
+  document.getElementById(bid).innerHTML=h;
+}
+
+function editEssayFeedback(role,paramEncoded,newText){
+  const param=decodeURIComponent(paramEncoded||'');
+  const history=getEssaySessionHistory(role);
+  if(!history.length) return;
+  const lastRun=history[history.length-1];
+  if(!lastRun.feedbacks) lastRun.feedbacks={};
+  lastRun.feedbacks[param]=String(newText||'').trim();
+}
+
+async function askSampleEssay(r){
+  const sessionHistory=getEssaySessionHistory(r);
+  const lastRun=sessionHistory[sessionHistory.length-1];
+  if(!lastRun){
+    toast('Evaluate an essay first','err');
+    return;
+  }
+  const profile=getStudentProfile('e',r);
+  const params=lastRun.parameters || [...S.params].slice(0,5);
+  load('Generating a sample essay…');
+  try{
+    const res=await api(EA,'/generate-sample-essay',{
+      essay_topic:lastRun.essay_topic || lastRun.essay_question || 'the given topic',
+      parameters:params,
+      ...profile,
+      learner_context:buildLearnerContext('sample essay')
+    });
+    const sampleText=(res&&res.sample_essay)||'';
+    S.essaySampleText[r]=sampleText;
+    S.essayFlowStage[r]='sampleShown';
+    renderEssaySample(r,sampleText);
+    toast('Sample essay generated!');
+    const sampleWrap=document.getElementById(`e${r}-sample-wrap`);
+    if(sampleWrap) setTimeout(()=>sampleWrap.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  }catch(e){
+    toast('Error: '+e.message,'err');
+  }finally{uload();}
+}
+
+function renderEssaySample(r,sampleText){
+  const sampleWrap=document.getElementById(`e${r}-sample-wrap`);
+  const repeatWrap=document.getElementById(`e${r}-repeat-wrap`);
+  const flow=document.getElementById(`e${r}-flow`);
+  if(flow) flow.textContent='Do you want to evaluate another essay?';
+  if(sampleWrap){
+    sampleWrap.style.display='block';
+    sampleWrap.innerHTML=`<div class="card" style="margin-top:.9rem"><div class="ctitle">Sample Essay</div><div class="qbox filled" style="white-space:pre-wrap">${escapeHtml(sampleText).replace(/\n/g,'<br>')}</div></div>`;
+  }
+  if(repeatWrap){
+    repeatWrap.style.display='block';
+    repeatWrap.innerHTML=`<div class="crow" style="margin-top:.9rem"><div class="cic">🔁</div>
+      <div class="cinfo"><h3>Another essay?</h3><p>Do you want to evaluate another essay now?</p></div>
+      <button class="bdl" onclick="continueEssayCycle('${r}')">Yes</button>
+      <button class="bdl" onclick="finishEssaySession('${r}')">No</button></div>`;
+  }
+}
+
+function continueEssayCycle(r){
+  const essay=document.getElementById(`e${r}-ess`);
+  if(essay){
+    essay.value='';
+    wcnt(`e${r}-ess`,`e${r}-wc`);
+    essay.focus();
+  }
+  const flow=document.getElementById(`e${r}-flow`);
+  if(flow) flow.textContent='Need a sample essay that scores highly on the selected parameters?';
+  const sampleWrap=document.getElementById(`e${r}-sample-wrap`);
+  if(sampleWrap){ sampleWrap.innerHTML=''; sampleWrap.style.display='none'; }
+  const repeatWrap=document.getElementById(`e${r}-repeat-wrap`);
+  if(repeatWrap){ repeatWrap.innerHTML=''; repeatWrap.style.display='none'; }
+  S.essaySampleText[r]='';
+  S.essayFlowStage[r]='samplePrompt';
+  step(`e${r}`,2);
+  toast('Write the next essay and evaluate again.');
+}
+
+async function finishEssaySession(r){
+  const sessionHistory=getEssaySessionHistory(r);
+  if(!sessionHistory.length){
+    toast('No essay session data available','err');
+    return;
+  }
+  const lastRun=sessionHistory[sessionHistory.length-1];
+  S.essaySessionFinished[r]=true;
+  S.essayFlowStage[r]='finished';
+  renderEssayRes(lastRun,'e'+r+'-rb');
+
+  const profile=getStudentProfile('e',r);
+  const ne=encodeURIComponent(lastRun.candidate_name||'Candidate');
+  const she=encodeURIComponent(JSON.stringify(sessionHistory));
+  const pcls=encodeURIComponent(lastRun.student_class||profile.student_class||'');
+  const pcur=encodeURIComponent(lastRun.curriculum||profile.curriculum||'');
+
+  try{
+    await dlEssayRpt(ne,she,pcls,pcur);
+    if(parseFloat(lastRun.avg_score||0)>=7){
+      const sp={};
+      Object.entries(lastRun.scores||{}).forEach(([k,v])=>sp[k]=v*10);
+      const se=encodeURIComponent(JSON.stringify(sp));
+      await dlEssayCert(ne,encodeURIComponent(lastRun.essay_topic||''),se,pcls,pcur);
+    }
+    toast('Essay session completed!');
+  }catch(e){
+    toast('Error: '+e.message,'err');
+  }
+}
+
+async function dlEssayCert(ne,te,se,pcls,pcur){
+  load('Generating certificate PDF…');
+  try{
+    const r=await fetch(EA+'/generate-certificate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({candidate_name:decodeURIComponent(ne),scores_percent:JSON.parse(decodeURIComponent(se)),essay_topic:decodeURIComponent(te),student_class:decodeURIComponent(pcls||''),curriculum:decodeURIComponent(pcur||'')})});
+    if(!r.ok)throw new Error('Certificate API error '+r.status);
+    const blob=await r.blob();
+    const u=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=u;a.download=decodeURIComponent(ne)+'_certificate.pdf';a.click();
+    toast('Certificate downloaded!');
+  }catch(e){toast('Error: '+e.message,'err');}
+  finally{uload();}
+}
+
+async function dlEssayRpt(ne,she,pcls,pcur){
+  load('Generating report PDF…');
+  try{
+    const r=await fetch(EA+'/generate-report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({candidate_name:decodeURIComponent(ne),session_history:JSON.parse(decodeURIComponent(she)),student_class:decodeURIComponent(pcls||''),curriculum:decodeURIComponent(pcur||'')})});
+    if(!r.ok)throw new Error('Report API error '+r.status);
+    const blob=await r.blob();
+    const u=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=u;a.download=decodeURIComponent(ne)+'_essay_report.pdf';a.click();
+    toast('Report downloaded!');
+  }catch(e){toast('Error: '+e.message,'err');}
+  finally{uload();}
+}
+
+function clrEssay(r){
+  ['e'+r+'-ess'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+  if(r==='T'){const nm=document.getElementById('eT-nm');if(nm)nm.value='';}
+  if(r==='T')document.getElementById('eT-tp').value='';
+  if(r==='S')document.getElementById('eS-tp').value='';
+  document.getElementById('e'+r+'-wc').textContent='0 words';
+  const qb=document.getElementById('e'+r+'-qb');
+  qb.textContent=r==='T'?'Type a topic above and click "Generate Question", or skip and paste the essay directly.':'Click "Generate Question" to get your essay prompt.';
+  qb.classList.remove('filled');
+  document.getElementById('e'+r+'-res').classList.remove('on');
+  const sampleWrap=document.getElementById(`e${r}-sample-wrap`); if(sampleWrap){ sampleWrap.innerHTML=''; sampleWrap.style.display='none'; }
+  const repeatWrap=document.getElementById(`e${r}-repeat-wrap`); if(repeatWrap){ repeatWrap.innerHTML=''; repeatWrap.style.display='none'; }
+  S.essaySampleText[r]='';
+  S.essayFlowStage[r]='idle';
+  if(r==='T')clrPar();
+  step('e'+r,1);
+}
+
+// ═══════════════ QUIZ — GENERATE ══════
+async function genQuiz(r){
+  const topic=document.getElementById('q'+r+'-tp').value.trim();
+  if(!topic){toast('Enter a topic','err');return;}
+  if(!ensureStudentProfile('q',r)) return;
+  const profile=getStudentProfile('q',r);
+  const diff=document.getElementById('q'+r+'-diff').value;
+  const lang=profile.language||document.getElementById('q'+r+'-lang').value;
+  const cnt=S.qcnt[r]||5;
+  const focusCats=S.tags[r].length?S.tags[r]:null;
+  const timedQuizEnabled=Boolean(document.getElementById('q'+r+'-timed')?.checked);
+  const rawTimeLimit=timedQuizEnabled
+    ? Number(document.getElementById('q'+r+'-time-limit')?.value||profile.time_limit_per_question_seconds||0)
+    : 0;
+  if(!Number.isFinite(rawTimeLimit) || rawTimeLimit<0){toast('Time limit must be 0 or a positive number','err');return;}
+  const timeLimitPerQuestionSec=(Number.isFinite(rawTimeLimit)&&rawTimeLimit>0)?Math.floor(rawTimeLimit):0;
+
+  load('Generating quiz with AI…');
+  step('q'+r,2);
+  try{
+    const res=await api(QA,'/generate-quiz',{student_id:(S.studentProfile.student_id||null),topic,language:lang,difficulty:diff,quiz_count:cnt,time_limit_per_question_sec:timeLimitPerQuestionSec,focus_categories:focusCats,...profile,learner_context:buildLearnerContext('quiz generation')});
+    S.qdata[r]=res;
+    if(!S.qdata[r].config) S.qdata[r].config={};
+    S.qdata[r].config.time_limit_per_question_sec=timeLimitPerQuestionSec;
+    renderQs(r,res.quiz);
+    const sec=document.getElementById('q'+r+'-qs');
+    sec.classList.add('on');
+    setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),100);
+    toast(`${res.quiz.length} questions generated!`);
+  }catch(e){toast('Error: '+e.message,'err');step('q'+r,1);}
+  finally{uload();}
+}
+
+function stopQuizTimer(r){
+  const flow=S.quizFlow[r];
+  if(flow && flow.timerId){
+    clearInterval(flow.timerId);
+    flow.timerId=null;
+  }
+}
+
+function playQuizWarningBeep(){
+  try{
+    const AudioCtx=window.AudioContext||window.webkitAudioContext;
+    if(!AudioCtx) return;
+    const ctx=new AudioCtx();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.type='sine';
+    osc.frequency.value=920;
+    gain.gain.setValueAtTime(0.0001,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.08,ctx.currentTime+0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.16);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime+0.18);
+    osc.onended=()=>{ctx.close().catch(()=>{});};
+  }catch(_){ }
+}
+
+function syncQuizTimerDisplay(r){
+  const flow=S.quizFlow[r];
+  const timerEl=document.getElementById(`q${r}-timer`);
+  if(!flow||!timerEl||!(flow.timeLimit>0)) return;
+  timerEl.textContent=`⏱ ${Math.max(0,flow.timerLeft)}s`;
+  timerEl.className='timer-pill '+(flow.timerLeft<=5?'warn':(flow.timerLeft<=10?'':'safe'));
+}
+
+function startQuizTimer(r,resetForCurrentQuestion=false){
+  const flow=S.quizFlow[r];
+  if(!flow || !(flow.timeLimit>0)) return;
+
+  const questionChanged=flow.timerQuestionIndex!==flow.index;
+  if(resetForCurrentQuestion || questionChanged){
+    stopQuizTimer(r);
+    flow.timerQuestionIndex=flow.index;
+    flow.timerLeft=flow.timeLimit;
+  }
+
+  syncQuizTimerDisplay(r);
+  if(flow.timerId) return;
+
+  flow.timerId=setInterval(()=>{
+    flow.timerLeft=Math.max(0,flow.timerLeft-1);
+    if(flow.timerLeft<5 && flow.timerLeft>0){
+      playQuizWarningBeep();
+    }
+    syncQuizTimerDisplay(r);
+    if(flow.timerLeft<=0){
+      stopQuizTimer(r);
+      goQuizNext(r,true);
+    }
+  },1000);
+}
+
+function renderQs(r,quiz){
+  stopQuizTimer(r);
+  const timeLimit=((S.qdata[r]&&S.qdata[r].time_limit_per_question_sec)||((S.qdata[r]&&S.qdata[r].config&&S.qdata[r].config.time_limit_per_question_sec)||0));
+  S.quizFlow[r]={
+    index:0,
+    answers:new Array(quiz.length).fill(null),
+    timerLeft:timeLimit,
+    timeLimit:timeLimit,
+    timerId:null,
+    timerQuestionIndex:0
+  };
+  renderCurrentQuizQuestion(r);
+}
+
+function renderCurrentQuizQuestion(r){
+  const qd=S.qdata[r];
+  if(!qd||!Array.isArray(qd.quiz)||!qd.quiz.length) return;
+  const quiz=qd.quiz;
+  const flow=S.quizFlow[r];
+  const qi=flow.index;
+  const q=quiz[qi];
+  const letters=['A','B','C','D','E','F'];
+  const cat=q.category||'general';
+  const txt=q.question.replace(/\[Category:[^\]]+\]/i,'').trim();
+  const selectedAns=flow.answers[qi];
+
+  const timerHtml=flow.timeLimit>0?`<span id="q${r}-timer" class="timer-pill safe">⏱ ${flow.timerLeft||flow.timeLimit}s</span>`:'';
+  const timedMode=flow.timeLimit>0;
+  const canPrev=qi>0 && !timedMode;
+  const hasSelected=selectedAns!==null && selectedAns!==undefined;
+  const isLast=qi===quiz.length-1;
+  const nextDisabled=(!hasSelected && !isLast)?'disabled':'';
+
+  document.getElementById('q'+r+'-qb').innerHTML=`
+    <div class="qblock" id="qb-${r}-${qi}">
+      <div class="seq-head">
+        <div class="qnum">Question ${qi+1} of ${quiz.length}</div>
+        ${timerHtml}
+      </div>
+      <div class="qcat">${cat}</div>
+      <div class="qtxt">${txt}</div>
+      <div class="opts">
+        ${q.options.map((o,oi)=>{
+          const isSel=selectedAns===o;
+          return `<div class="opt ${isSel?'sel':''}" data-qi="${qi}" data-oi="${oi}" data-r="${r}" onclick="pickSequentialOpt(this)">
+            <span class="olet">${letters[oi]||String(oi+1)}</span><span>${o}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="seq-nav">
+        ${canPrev?`<button class="btn bo" onclick="goQuizPrev('${r}')">← Previous</button>`:''}
+        <button class="btn ${r==='T'?'bl':'bg'}" ${nextDisabled} onclick="goQuizNext('${r}',false)">${isLast?'Submit Quiz':'Next →'}</button>
+      </div>
+      ${!hasSelected?'<div class="wc" style="margin-top:.55rem">Select an answer to continue. If timer runs out, this question is marked incorrect.</div>':''}
+    </div>`;
+
+  startQuizTimer(r,false);
+}
+
+function pickSequentialOpt(el){
+  const qi=Number(el.dataset.qi);
+  const oi=Number(el.dataset.oi);
+  const r=el.dataset.r;
+  const quiz=(S.qdata[r]&&S.qdata[r].quiz)||[];
+  if(!quiz[qi]) return;
+  const ans=quiz[qi].options[oi] ?? null;
+  S.quizFlow[r].answers[qi]=ans;
+  renderCurrentQuizQuestion(r);
+}
+
+function goQuizPrev(r){
+  const flow=S.quizFlow[r];
+  if(!flow) return;
+  if(flow.timeLimit>0) return;
+  if(flow.index>0){
+    flow.index-=1;
+    renderCurrentQuizQuestion(r);
+  }
+}
+
+function goQuizNext(r, forced){
+  const qd=S.qdata[r];
+  if(!qd||!Array.isArray(qd.quiz)) return;
+  const flow=S.quizFlow[r];
+  const qi=flow.index;
+  const isLast=qi>=qd.quiz.length-1;
+  const selected=flow.answers[qi];
+  if(!forced && (selected===null || selected===undefined)){
+    toast('Select an option to continue','err');
+    return;
+  }
+  if(isLast){
+    submitQuiz(r);
+    return;
+  }
+  flow.index+=1;
+  if(flow.timeLimit>0){
+    startQuizTimer(r,true);
+  }
+  renderCurrentQuizQuestion(r);
+}
+
+// ═══════════════ QUIZ — SUBMIT ════════
+async function submitQuiz(r){
+  const qd=S.qdata[r];
+  if(!qd){toast('Generate a quiz first','err');return;}
+  stopQuizTimer(r);
+  const name=getCandidateName('q',r);
+  const quiz=qd.quiz;
+  const flow=S.quizFlow[r];
+  const answers=(flow && Array.isArray(flow.answers) && flow.answers.length===quiz.length)
+    ? flow.answers.slice()
+    : quiz.map((q,qi)=>{
+        const sel=document.querySelector(`.opt.sel[data-qi="${qi}"][data-r="${r}"]`);
+        return sel?q.options[parseInt(sel.dataset.oi,10)]:null;
+      });
+
+  load('Evaluating your answers…');
+  step('q'+r,3);
+  try{
+    const res=await api(QA,'/evaluate-answers',{quiz,user_answers:answers,candidate_name:name});
+
+    if(!S.quizSessionHistory[r]) S.quizSessionHistory[r]=[];
+    const profile=getStudentProfile('q',r);
+    S.quizSessionHistory[r].push({
+      config: S.qdata[r]?.config || {topic:'',difficulty:'medium',language:'English',quiz_count:quiz.length,focus_categories:[],student_class:profile.student_class,curriculum:profile.curriculum},
+      category_stats: res.category_stats || {},
+      score_percent: res.score_percent || 0,
+      correct_count: res.correct_count || 0,
+      total_questions: res.total_questions || quiz.length,
+      quiz: quiz,
+      details: res.details || [],
+      timestamp: Date.now()/1000
+    });
+    S.quizSessionFinished[r] = false;
+    if(r==='S'){
+      await recordStudentPerformance('quiz',Number(res.score_percent||0),{
+        topic:(S.qdata[r]&&S.qdata[r].config&&S.qdata[r].config.topic)||'',
+        difficulty:(S.qdata[r]&&S.qdata[r].config&&S.qdata[r].config.difficulty)||'medium',
+        category_percentages:res.category_percentages||{}
+      });
+    }
+
+    renderQuizRes(r,res,name,quiz,false);
+    const sec=document.getElementById('q'+r+'-res');
+    sec.classList.add('on');
+    setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),100);
+    toast('Quiz submitted!');
+  }catch(e){toast('Error: '+e.message,'err');step('q'+r,2);}
+  finally{uload();}
+}
+
+function renderQuizRes(r,res,name,quiz){
+  const pct=parseFloat(res.score_percent)||0;
+  const passed=pct>=50;
+  const sc=p=>p>=70?'svg':p>=50?'sva':'svr';
+  const bc=p=>p>=70?'bfg':p>=50?'bfa':'bfr';
+
+  let h=`<div class="sg">
+    <div class="sc"><div class="sl">SCORE</div><div class="sv ${sc(pct)}">${pct.toFixed(1)}%</div></div>
+    <div class="sc"><div class="sl">CORRECT</div><div class="sv svg">${res.correct_count}</div></div>
+    <div class="sc"><div class="sl">TOTAL</div><div class="sv svb">${res.total_questions}</div></div>
+    <div class="sc"><div class="sl">STATUS</div><div style="margin-top:.3rem"><span class="badge ${passed?'pass':'fail'}">${passed?'✓ PASS':'✗ FAIL'}</span></div></div>
+  </div>`;
+
+  if(res.category_percentages&&Object.keys(res.category_percentages).length){
+    h+=`<div style="font-size:.7rem;font-weight:700;color:var(--t2);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.62rem">Category Breakdown</div>`;
+    Object.entries(res.category_percentages).forEach(([cat,p])=>{
+      const st=res.category_stats?.[cat]||{};
+      h+=`<div class="csr">
+        <span class="csn">${cat}</span>
+        <div class="bar" style="flex:1"><div class="bf ${bc(p)}" style="width:${p}%"></div></div>
+        <span class="cspct" style="color:var(--t1)">${st.correct||0}/${st.total||0}</span>
+        <span style="font-size:.76rem;color:var(--t2);min-width:42px;text-align:right">${p.toFixed(0)}%</span>
+      </div>`;
+    });
+  }
+
+  // Per-question summary
+  h+=`<div style="font-size:.7rem;font-weight:700;color:var(--t2);letter-spacing:.07em;text-transform:uppercase;margin:1rem 0 .62rem">Question Summary</div>`;
+  quiz.forEach((q,qi)=>{
+    const d=res.details[qi];
+    const qtxt=q.question.replace(/\[Category:[^\]]+\]/i,'').trim().slice(0,80)+(q.question.length>80?'…':'');
+    h+=`<div style="display:flex;align-items:flex-start;gap:.6rem;padding:.5rem 0;border-bottom:1px solid rgba(100,160,255,.05);font-size:.8rem">
+      <span style="color:${d?.is_correct?'var(--grn)':'var(--red)'};font-size:1rem;flex-shrink:0">${d?.is_correct?'✓':'✗'}</span>
+      <div><div style="color:var(--t1);margin-bottom:.2rem">${qtxt}</div>
+      ${!d?.is_correct?`<div style="color:var(--t2)">Correct: <span style="color:var(--grn)">${q.answer}</span></div>`:''}
+      </div></div>`;
+  });
+
+  const cfg=S.qdata[r]?.config||{topic:'',difficulty:'medium',language:'English',quiz_count:quiz.length,focus_categories:[]};
+  const sessionHistory = S.quizSessionHistory[r] || [];
+  const lastRun = sessionHistory[sessionHistory.length-1] || {};
+  const prevRun = sessionHistory.length > 1 ? sessionHistory[sessionHistory.length-2] : null;
+  const improvement = prevRun ? (lastRun.score_percent - prevRun.score_percent) : 0;
+  const improvementText = prevRun
+    ? (improvement > 0 ? `Improved by ${improvement.toFixed(1)}% compared to the previous quiz.`
+        : improvement < 0 ? `Score declined by ${Math.abs(improvement).toFixed(1)}% from the previous quiz.`
+        : `Score unchanged compared to the previous quiz.`)
+    : '';
+
+  if(improvementText){
+    h+=`<div class="fb ${improvement>0?'g':'improv'}" style="margin-top:1rem">${improvementText}</div>`;
+  }
+
+  const ne=encodeURIComponent(name);
+  const she=encodeURIComponent(JSON.stringify(sessionHistory));
+  const pcls=encodeURIComponent((S.studentProfile.student_class||''));
+  const pcur=encodeURIComponent((S.studentProfile.curriculum||''));
+
+  h+=`<div class="crow" style="margin-top:1.1rem"><div class="cic">🔁</div>
+    <div class="cinfo"><h3>Quiz Session Options</h3><p>Keep going with another quiz, change the topic, or finish the session and generate reports.</p></div>
+    <button class="bdl" onclick="continueQuiz('${r}', false)">↻ Another quiz same topic</button>
+    <button class="bdl" onclick="continueQuiz('${r}', true)">✏ Change topic</button>
+    <button class="bdl" onclick="finishQuizSession('${r}','${ne}')">✅ Finish session</button>
+  </div>`;
+
+  if(S.quizSessionFinished[r]){
+    h+=`<div class="crow" style="margin-top:1rem"><div class="cic">📄</div>
+      <div class="cinfo"><h3>Session Report PDF</h3><p>${name} · ${res.correct_count}/${res.total_questions} · ${pct.toFixed(1)}%</p></div>
+      <button class="bdl" onclick="dlQuizRpt('${ne}','${she}','${pcls}','${pcur}')">⬇ Report</button></div>`;
+
+    if(passed){
+      const sp={};Object.entries(res.category_percentages||{}).forEach(([k,v])=>sp[k]=v);
+      const se=encodeURIComponent(JSON.stringify(sp));
+      const te=encodeURIComponent(cfg.topic||'Quiz');
+      h+=`<div class="crow"><div class="cic">🏆</div>
+        <div class="cinfo"><h3>Certificate Eligible!</h3><p>${name} — ≥50% overall — certificate available</p></div>
+        <button class="bdl" onclick="dlQuizCert('${ne}','${te}','${se}','${pcls}','${pcur}')">⬇ Certificate</button></div>`;
+    }
+  }
+
+  document.getElementById('q'+r+'-rb').innerHTML=h;
+}
+
+function continueQuiz(r, changeTopic){
+  if(changeTopic){
+    clrQuiz(r, false);
+    toast('Quiz session continues. Change the topic and generate the next quiz.');
+  } else {
+    clrQuiz(r, true);
+    toast('Quiz session continues with the same topic. Generate the next quiz.');
+  }
+}
+
+function finishQuizSession(r, name){
+  S.quizSessionFinished[r] = true;
+  const sec=document.getElementById('q'+r+'-rb');
+  const currentRes = S.quizSessionHistory[r] && S.quizSessionHistory[r].length ? S.quizSessionHistory[r][S.quizSessionHistory[r].length - 1] : null;
+  if(!currentRes){
+    toast('No quiz session data available','err');
+    return;
+  }
+  renderQuizRes(r, currentRes, decodeURIComponent(name), currentRes.quiz || [], true);
+}
+
+async function dlQuizRpt(ne,she,pcls,pcur){
+  load('Generating quiz report PDF…');
+  try{
+    const r=await fetch(QA+'/generate-session-report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({candidate_name:decodeURIComponent(ne),session_history:JSON.parse(decodeURIComponent(she)),student_class:decodeURIComponent(pcls||''),curriculum:decodeURIComponent(pcur||'')})});
+    if(!r.ok)throw new Error('Report error '+r.status);
+    const blob=await r.blob();
+    const u=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=u;a.download=decodeURIComponent(ne)+'_quiz_report.pdf';a.click();
+    toast('Report downloaded!');
+  }catch(e){toast('Error: '+e.message,'err');}
+  finally{uload();}
+}
+
+async function dlQuizCert(ne,te,se,pcls,pcur){
+  load('Generating quiz certificate PDF…');
+  try{
+    const r=await fetch(QA+'/generate-quiz-certificate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({candidate_name:decodeURIComponent(ne),scores_percent:JSON.parse(decodeURIComponent(se)),topic:decodeURIComponent(te),student_class:decodeURIComponent(pcls||''),curriculum:decodeURIComponent(pcur||'')})});
+    if(!r.ok)throw new Error('Certificate API error '+r.status);
+    const blob=await r.blob();
+    const u=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=u;a.download=decodeURIComponent(ne)+'_quiz_certificate.pdf';a.click();
+    toast('Certificate downloaded!');
+  }catch(e){toast('Error: '+e.message,'err');}
+  finally{uload();}
+}
+
+function clrQuiz(r, keepTopic=false){
+  stopQuizTimer(r);
+  if(!keepTopic){
+    const tp=document.getElementById('q'+r+'-tp'); if(tp) tp.value='';
+    S.tags[r]=[];renderTags(r);
+    S.scats[r]=[];const scbox=document.getElementById('q'+r+'-scbox');if(scbox)scbox.classList.remove('on');
+  }
+  document.getElementById('q'+r+'-qs').classList.remove('on');
+  document.getElementById('q'+r+'-res').classList.remove('on');
+  S.qdata[r]=null;
+  S.quizFlow[r]={index:0,answers:[],timerLeft:0,timeLimit:0,timerId:null};
+  S.quizSessionFinished[r] = false;
+  step('q'+r,1);
+}
+
+// ═══════════════ PRQ — GENERATE ═══════
+function adjPrq(r,d){
+  S.prqCnt[r]=Math.max(2,Math.min(10,(S.prqCnt[r]||5)+d));
+  syncPrqCountUI(r);
+}
+
+function syncPrqCountUI(r){
+  ['p'+r+'-cnt','p'+r+'-topic-cnt'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.textContent=S.prqCnt[r]||5;
+  });
+}
+
+async function genPrq(r){
+  const passage=document.getElementById('p'+r+'-pass').value.trim();
+  const name=getCandidateName('p',r);
+  if(!ensureStudentProfile('p',r)) return;
+  const profile=getStudentProfile('p',r);
+  const difficulty=document.getElementById('p'+r+'-diff').value;
+  const question_count=S.prqCnt[r]||5;
+  const ownership=getPrqOwnership(r);
+
+  if(passage.split(/\s+/).filter(Boolean).length<50){toast('Paragraph must be at least 50 words','err');return;}
+
+  load('Generating paragraph reading questions…');
+  step('p'+r,2);
+  try{
+    const res=await api(PA,'/prq/generate',{candidate_name:name,passage,difficulty,question_count,force_new:true,paragraph_owner:ownership.paragraph,question_owner:ownership.question,answer_owner:ownership.answer,...profile,learner_context:buildLearnerContext('paragraph reading')});
+    S.prqData[r]=res;
+    if(!S.prqData[r].config) S.prqData[r].config={};
+    S.prqData[r].config.paragraph_owner=ownership.paragraph;
+    S.prqData[r].config.question_owner=ownership.question;
+    S.prqData[r].config.answer_owner=ownership.answer;
+    renderPrqQs(r,res.questions||[]);
+    const sec=document.getElementById('p'+r+'-qs');
+    sec.classList.add('on');
+    setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),100);
+    toast(`${(res.questions||[]).length} PRQ questions generated!`);
+    if(ownership.answer==='agent') setTimeout(()=>submitPrq(r), 0);
+  }catch(e){toast('Error: '+e.message,'err');step('p'+r,1);}
+  finally{uload();}
+}
+
+async function genPrqFromTopic(r){
+  const topic=document.getElementById('p'+r+'-topic').value.trim();
+  const name=getCandidateName('p',r);
+  if(!topic){toast('Enter a topic first','err');return;}
+  if(!ensureStudentProfile('p',r)) return;
+  const profile=getStudentProfile('p',r);
+  const difficulty=document.getElementById('p'+r+'-diff').value;
+  const question_count=S.prqCnt[r]||5;
+  const ownership=getPrqOwnership(r);
+  const minEl=document.getElementById('p'+r+'-minw');
+  const maxEl=document.getElementById('p'+r+'-maxw');
+  const paragraph_min_words=Math.max(150,parseInt((minEl&&minEl.value)||'150',10)||150);
+  const paragraph_max_words=Math.max(paragraph_min_words,parseInt((maxEl&&maxEl.value)||'220',10)||220);
+  if(minEl) minEl.value=String(paragraph_min_words);
+  if(maxEl) maxEl.value=String(paragraph_max_words);
+
+  load('Generating paragraph and questions…');
+  step('p'+r,2);
+  try{
+    const res=await api(PA,'/prq/generate-topic',{candidate_name:name,topic,difficulty,question_count,paragraph_min_words,paragraph_max_words,force_new:true,paragraph_owner:ownership.paragraph,question_owner:ownership.question,answer_owner:ownership.answer,...profile,learner_context:buildLearnerContext('paragraph from topic')});
+    S.prqData[r]={passage:res.passage||'',questions:res.questions||[],config:res.config||{topic,difficulty,question_count,...profile}};
+    S.prqData[r].config.paragraph_owner=ownership.paragraph;
+    S.prqData[r].config.question_owner=ownership.question;
+    S.prqData[r].config.answer_owner=ownership.answer;
+    const topicBox=document.getElementById('p'+r+'-topic-pass');
+    if(topicBox) topicBox.value=res.passage||'';
+    const topicOut=document.getElementById('p'+r+'-topic-out');
+    if(topicOut && res.passage) topicOut.style.display='block';
+    const topicCount=document.getElementById('p'+r+'-topic-wc');
+    if(topicCount) topicCount.textContent=((res.passage||'').trim().split(/\s+/).filter(Boolean).length)+' words';
+    renderPrqQs(r,res.questions||[]);
+    const sec=document.getElementById('p'+r+'-qs');
+    sec.classList.add('on');
+    setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),100);
+    toast('Paragraph and questions generated!');
+    if(ownership.answer==='agent') setTimeout(()=>submitPrq(r), 0);
+  }catch(e){toast('Error: '+e.message,'err');step('p'+r,1);}
+  finally{uload();}
+}
+
+async function reviewPrqPaste(r){
+  const passage=document.getElementById('p'+r+'-review-pass').value.trim();
+  const questionsText=document.getElementById('p'+r+'-review-questions').value.trim();
+  const answersText=document.getElementById('p'+r+'-review-answers').value.trim();
+  const name=getCandidateName('p',r);
+  if(!passage){toast('Paste a paragraph first','err');return;}
+  if(!questionsText){toast('Paste the questions first','err');return;}
+  if(!ensureStudentProfile('p',r)) return;
+  const profile=getStudentProfile('p',r);
+  const ownership=getPrqOwnership(r);
+
+  load('Reviewing pasted paragraph and questions…');
+  step('p'+r,2);
+  try{
+    const res=await api(PA,'/prq/review-paste',{candidate_name:name,passage,questions_text:questionsText,answers_text:answersText||null,paragraph_owner:ownership.paragraph,question_owner:ownership.question,answer_owner:ownership.answer,...profile,learner_context:buildLearnerContext('pasted PRQ review')});
+    renderPrqReviewResult(r,res,name);
+    const sec=document.getElementById('p'+r+'-res');
+    sec.classList.add('on');
+    setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),100);
+    toast('Review complete!');
+  }catch(e){toast('Error: '+e.message,'err');step('p'+r,1);}
+  finally{uload();}
+}
+
+function renderPrqQs(r,questions){
+  const L=['A','B','C','D'];
+  document.getElementById('p'+r+'-qb').innerHTML=questions.map((q,qi)=>`
+    <div class="qblock">
+      <div class="qnum">Question ${qi+1} of ${questions.length}</div>
+      <div class="qcat">${q.type||'literal'}</div>
+      <div class="qtxt">${q.question||''}</div>
+      <div class="opts">${(q.options||[]).map((o,oi)=>`
+        <div class="opt" data-pr="${r}" data-qi="${qi}" data-oi="${oi}" onclick="pickPrqOpt(this)">
+          <span class="olet">${L[oi]||String.fromCharCode(65+oi)}</span><span>${o}</span>
+        </div>`).join('')}</div>
+      <div class="expl" id="pex-${r}-${qi}">${q.explanation||''}</div>
+    </div>
+  `).join('');
+}
+
+function pickPrqOpt(el){
+  const qi=el.dataset.qi,r=el.dataset.pr;
+  document.querySelectorAll(`.opt[data-pr="${r}"][data-qi="${qi}"]`).forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+async function submitPrq(r){
+  const data=S.prqData[r];
+  if(!data||!data.questions){toast('Generate PRQ questions first','err');return;}
+  const ownership=getPrqOwnership(r);
+
+  const answers=ownership.answer==='agent'
+    ? data.questions.map((q)=>String(q.answer||'A').trim().toUpperCase() || 'A')
+    : data.questions.map((q,qi)=>{
+        const sel=document.querySelector(`.opt.sel[data-pr="${r}"][data-qi="${qi}"]`);
+        if(!sel)return null;
+        const oi=parseInt(sel.dataset.oi,10);
+        return ['A','B','C','D','E','F'][oi]||'A';
+      });
+
+  const blank=answers.filter(a=>!a).length;
+  if(blank>0){toast(`${blank} question(s) not answered yet`,'err');return;}
+
+  const name=getCandidateName('p',r);
+  load('Evaluating PRQ answers…');
+  step('p'+r,3);
+  try{
+    const res=await api(PA,'/prq/evaluate',{
+      candidate_name:name,
+      passage:data.passage,
+      questions:data.questions,
+      user_answers:answers,
+      config:data.config
+    });
+
+    if(!S.prqSessionHistory[r]) S.prqSessionHistory[r]=[];
+    const profile=getStudentProfile('p',r);
+    S.prqSessionHistory[r].push({
+      config: data.config || {difficulty:'medium',question_count:data.questions.length,student_class:profile.student_class,curriculum:profile.curriculum},
+      type_stats: res.type_stats || {},
+      type_percentages: res.type_percentages || {},
+      score_percent: res.score_percent || 0,
+      correct_count: res.correct_count || 0,
+      total_questions: res.total_questions || data.questions.length,
+      timestamp: Date.now()/1000
+    });
+    S.prqSessionFinished[r]=false;
+    if(r==='S'){
+      await recordStudentPerformance('prq',Number(res.score_percent||0),{
+        difficulty:(data.config&&data.config.difficulty)||'medium',
+        question_count:Number(res.total_questions||data.questions.length||0)
+      });
+    }
+
+    data.questions.forEach((q,qi)=>{
+      const d=res.details?.[qi];
+      const selEl=document.querySelector(`.opt.sel[data-pr="${r}"][data-qi="${qi}"]`);
+      if(selEl){selEl.classList.remove('sel');selEl.classList.add(d?.is_correct?'ok':'ng');}
+      if(!d?.is_correct){
+        const idx=['A','B','C','D','E','F'].indexOf(d?.correct_answer||'A');
+        const ok=document.querySelector(`.opt[data-pr="${r}"][data-qi="${qi}"][data-oi="${idx}"]`);
+        if(ok)ok.classList.add('ok');
+      }
+      document.querySelectorAll(`.opt[data-pr="${r}"][data-qi="${qi}"]`).forEach(o=>o.classList.add('off'));
+      const ex=document.getElementById('pex-'+r+'-'+qi);if(ex)ex.classList.add('on');
+    });
+
+    renderPrqRes(r,res,name,false);
+    const sec=document.getElementById('p'+r+'-res');
+    sec.classList.add('on');
+    setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),100);
+    toast('Answers submitted!');
+  }catch(e){toast('Error: '+e.message,'err');step('p'+r,2);}
+  finally{uload();}
+}
+
+function prqSessionSummary(r){
+  const runs=S.prqSessionHistory[r]||[];
+  let total=0,correct=0;
+  const typeStats={};
+  runs.forEach(run=>{
+    total+=run.total_questions||0;
+    correct+=run.correct_count||0;
+    const ts=run.type_stats||{};
+    Object.entries(ts).forEach(([t,v])=>{
+      if(!typeStats[t])typeStats[t]={total:0,correct:0};
+      typeStats[t].total+=(v.total||0);
+      typeStats[t].correct+=(v.correct||0);
+    });
+  });
+  const typePercentages={};
+  Object.entries(typeStats).forEach(([t,v])=>{
+    typePercentages[t]=v.total?((v.correct/v.total)*100):0;
+  });
+  return {
+    attempts:runs.length,
+    total_questions:total,
+    correct_count:correct,
+    score_percent:total?((correct/total)*100):0,
+    type_stats:typeStats,
+    type_percentages:typePercentages
+  };
+}
+
+function renderPrqRes(r,res,name,finished=false){
+  const session=prqSessionSummary(r);
+  const pct=parseFloat(session.score_percent)||0;
+  const passed=pct>=60;
+  const sc=p=>p>=75?'svg':p>=60?'sva':'svr';
+  const bc=p=>p>=75?'bfg':p>=60?'bfa':'bfr';
+
+  let h=`<div class="sg">
+    <div class="sc"><div class="sl">SCORE</div><div class="sv ${sc(pct)}">${pct.toFixed(1)}%</div></div>
+    <div class="sc"><div class="sl">CORRECT</div><div class="sv svg">${session.correct_count||0}</div></div>
+    <div class="sc"><div class="sl">TOTAL</div><div class="sv svb">${session.total_questions||0}</div></div>
+    <div class="sc"><div class="sl">STATUS</div><div style="margin-top:.3rem"><span class="badge ${passed?'pass':'fail'}">${passed?'✓ PASS':'✗ NEEDS PRACTICE'}</span></div></div>
+  </div>`;
+
+  if(session.type_percentages&&Object.keys(session.type_percentages).length){
+    h+=`<div style="font-size:.7rem;font-weight:700;color:var(--t2);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.62rem">Question Type Breakdown</div>`;
+    Object.entries(session.type_percentages).forEach(([type,p])=>{
+      const st=session.type_stats?.[type]||{};
+      h+=`<div class="csr">
+        <span class="csn">${type}</span>
+        <div class="bar" style="flex:1"><div class="bf ${bc(p)}" style="width:${p}%"></div></div>
+        <span class="cspct" style="color:var(--t1)">${st.correct||0}/${st.total||0}</span>
+        <span style="font-size:.76rem;color:var(--t2);min-width:42px;text-align:right">${p.toFixed(0)}%</span>
+      </div>`;
+    });
+  }
+
+  h+=`<div class="fb ${passed?'g':''}" style="margin-top:1rem"><p>${name} scored ${pct.toFixed(1)}% in this set. Session overall: <strong>${session.score_percent.toFixed(1)}%</strong> (${session.correct_count}/${session.total_questions}) across ${session.attempts} run(s).</p></div>`;
+
+  if(!finished){
+    h+=`<div class="crow" style="margin-top:1rem"><div class="cic">❓</div>
+      <div class="cinfo"><h3>Need More Questions?</h3><p>Choose yes to continue with another set, or no to end paragraph reading and generate final files.</p></div>
+      <button class="bdl" onclick="continuePrq('${r}')">Yes, More</button>
+      <button class="bdl" onclick="finishPrqSession('${r}')">No, Finish</button></div>`;
+  } else {
+    const ne=encodeURIComponent(name||'Candidate');
+    const she=encodeURIComponent(JSON.stringify(S.prqSessionHistory[r]||[]));
+    const pcls=encodeURIComponent((S.studentProfile.student_class||''));
+    const pcur=encodeURIComponent((S.studentProfile.curriculum||''));
+    h+=`<div class="crow" style="margin-top:1rem"><div class="cic">📄</div>
+      <div class="cinfo"><h3>Complete Session Report</h3><p>Download final paragraph reading report for all attempts.</p></div>
+      <button class="bdl" onclick="dlPrqRpt('${ne}','${she}','${pcls}','${pcur}')">⬇ Report</button></div>`;
+
+    if(session.score_percent>=60){
+      const sp={overall:session.score_percent};
+      Object.entries(session.type_percentages||{}).forEach(([k,v])=>sp[k]=v);
+      const se=encodeURIComponent(JSON.stringify(sp));
+      h+=`<div class="crow"><div class="cic">🏆</div>
+        <div class="cinfo"><h3>Certificate Eligible!</h3><p>Session score is ${session.score_percent.toFixed(1)}% (threshold: 60%).</p></div>
+        <button class="bdl" onclick="dlPrqCert('${ne}','${se}','${pcls}','${pcur}')">⬇ Certificate</button></div>`;
+    }
+  }
+
+  document.getElementById('p'+r+'-rb').innerHTML=h;
+}
+
+function renderPrqReviewResult(r,res,name){
+  const items=res.items||[];
+  const hasScore=typeof res.score_percent==='number';
+  const passed=hasScore ? res.score_percent>=60 : false;
+  let h=`<div class="sg">
+    <div class="sc"><div class="sl">QUESTIONS</div><div class="sv svb">${items.length}</div></div>
+    <div class="sc"><div class="sl">SCORE</div><div class="sv ${passed?'svg':'sva'}">${hasScore?res.score_percent.toFixed(1)+'%':'—'}</div></div>
+    <div class="sc"><div class="sl">STATUS</div><div style="margin-top:.3rem"><span class="badge ${passed?'pass':'fail'}">${hasScore ? (passed?'✓ PASS':'✗ CHECK') : 'ANSWER KEY'}</span></div></div>
+  </div>`;
+  if(res.summary) h+=`<div class="fb ${passed?'g':''}"><p>${res.summary}</p></div>`;
+  h+=`<div style="overflow-x:auto"><table class="ptbl"><thead><tr><th>#</th><th>Question</th><th>Correct Answer</th><th>Status</th></tr></thead><tbody>`;
+  items.forEach((item,idx)=>{
+    h+=`<tr><td>${idx+1}</td><td style="max-width:320px">${item.question||''}</td><td>${item.correct_answer||''}</td><td>${item.is_correct===undefined?'OK':(item.is_correct?'✓':'✗')}</td></tr>`;
+  });
+  h+=`</tbody></table></div>`;
+  if(res.note) h+=`<div class="fb g" style="margin-top:1rem"><p>${res.note}</p></div>`;
+  document.getElementById('p'+r+'-rb').innerHTML=h;
+}
+
+function continuePrq(r){
+  S.prqData[r]=null;
+  document.getElementById('p'+r+'-qs').classList.remove('on');
+  step('p'+r,1);
+  toast('Generate next question set to continue.');
+}
+
+function finishPrqSession(r){
+  S.prqSessionFinished[r]=true;
+  const runs=S.prqSessionHistory[r]||[];
+  if(!runs.length){toast('No PRQ session data available','err');return;}
+  const summary=prqSessionSummary(r);
+  const name=getCandidateName('p',r);
+  renderPrqRes(r,summary,name,true);
+}
+
+async function dlPrqRpt(ne,she,pcls,pcur){
+  load('Generating PRQ report PDF…');
+  try{
+    const r=await fetch(PA+'/prq/generate-session-report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({candidate_name:decodeURIComponent(ne),session_history:JSON.parse(decodeURIComponent(she)),student_class:decodeURIComponent(pcls||''),curriculum:decodeURIComponent(pcur||'')})});
+    if(!r.ok)throw new Error('Report API error '+r.status);
+    const blob=await r.blob();
+    const u=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=u;a.download=decodeURIComponent(ne)+'_prq_report.pdf';a.click();
+    toast('PRQ report downloaded!');
+  }catch(e){toast('Error: '+e.message,'err');}
+  finally{uload();}
+}
+
+async function dlPrqCert(ne,se,pcls,pcur){
+  load('Generating PRQ certificate PDF…');
+  try{
+    const r=await fetch(PA+'/prq/generate-certificate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({candidate_name:decodeURIComponent(ne),scores_percent:JSON.parse(decodeURIComponent(se)),threshold:60,student_class:decodeURIComponent(pcls||''),curriculum:decodeURIComponent(pcur||'')})});
+    if(!r.ok)throw new Error('Certificate API error '+r.status);
+    const blob=await r.blob();
+    const u=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=u;a.download=decodeURIComponent(ne)+'_prq_certificate.pdf';a.click();
+    toast('PRQ certificate downloaded!');
+  }catch(e){toast('Error: '+e.message,'err');}
+  finally{uload();}
+}
+
+function clrPrq(r){
+  ['p'+r+'-pass'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+  const t=document.getElementById('p'+r+'-topic'); if(t) t.value='';
+  const rp=document.getElementById('p'+r+'-review-pass'); if(rp) rp.value='';
+  const rq=document.getElementById('p'+r+'-review-questions'); if(rq) rq.value='';
+  const ra=document.getElementById('p'+r+'-review-answers'); if(ra) ra.value='';
+  if(r==='T'){const nm=document.getElementById('pT-nm');if(nm)nm.value='';}
+  document.getElementById('p'+r+'-wc').textContent='0 words';
+  const rpc=document.getElementById('p'+r+'-review-pass-wc'); if(rpc) rpc.textContent='0 words';
+  document.getElementById('p'+r+'-qs').classList.remove('on');
+  document.getElementById('p'+r+'-res').classList.remove('on');
+  S.prqData[r]=null;
+  S.prqSessionHistory[r]=[];
+  S.prqSessionFinished[r]=false;
+  S.prqCnt[r]=5;
+  syncPrqCountUI(r);
+  const minEl=document.getElementById('p'+r+'-minw'); if(minEl) minEl.value='150';
+  const maxEl=document.getElementById('p'+r+'-maxw'); if(maxEl) maxEl.value='220';
+  setPrqMode(r,'generate');
+  step('p'+r,1);
+}
+
+// ═══════════════ INIT ═════════════════
+buildChips();
+syncStudentProfileToUI();
+// Initial visibility — show teacher views by default
+['eS','qS','pS'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+</script>
+</body>
+</html>

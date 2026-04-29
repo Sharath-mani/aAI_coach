@@ -1,0 +1,26 @@
+[
+  {
+    "candidate_name": "hjkl",
+    "config": {
+      "difficulty": "easy",
+      "question_count": 3,
+      "passage_type": "story"
+    },
+    "type_stats": {
+      "literal": {
+        "total": 1,
+        "correct": 1
+      },
+      "inferential": {
+        "total": 1,
+        "correct": 1
+      },
+      "vocabulary": {
+        "total": 1,
+        "correct": 0
+      }
+    },
+    "score_percent": 66.66666666666666,
+    "timestamp": 1776069849.229019
+  }
+]
